@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>몽글몽글 이어말 동물원</title>
+    <title>몽글몽글 하트 강화 동물원</title>
     <style>
         @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
 
@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Pretendard', sans-serif;
+            user-select: none;
         }
 
         body {
@@ -30,56 +31,144 @@
             gap: 20px;
         }
 
+        /* 0. 이름 입력 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 360px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 2px solid #f43f5e;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #f43f5e;
+            margin-bottom: 8px;
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        .modal-input:focus {
+            border-color: #f43f5e;
+        }
+
+        .modal-btn {
+            width: 100%;
+            background: #f43f5e;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         header {
             text-align: center;
-            margin-bottom: 5px;
         }
 
         header h1 {
             color: #6b46c1;
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-size: 26px;
+            margin-bottom: 4px;
         }
 
         header p {
             color: #666;
-            font-size: 14px;
-        }
-
-        /* 배너 */
-        .banner {
-            background: linear-gradient(135deg, #e6fffa 0%, #ebf8ff 100%);
-            border: 2px solid #b2f5ea;
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .banner-title {
-            color: #2b6cb0;
-            font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-
-        .banner-sub {
-            color: #4a5568;
             font-size: 13px;
+        }
+
+        /* 1. 상단 완성된 동물원 무대 */
+        .zoo-stage-card {
+            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 60%, #86efac 60%, #4ade80 100%);
+            border: 3px solid #7dd3fc;
+            border-radius: 20px;
+            padding: 15px;
+            min-height: 140px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .zoo-stage-title {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #0369a1;
+            display: inline-block;
             margin-bottom: 10px;
         }
 
-        .banner-reward {
-            display: inline-block;
-            background: #fff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #d69e2e;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        .zoo-stage-animals {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            min-height: 70px;
+            padding: 0 10px;
+            overflow-x: auto;
         }
 
-        /* 레이아웃 그리드 */
+        .zoo-stage-pet {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        .zoo-stage-pet-avatar {
+            font-size: 40px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+        }
+
+        .zoo-stage-pet-name {
+            font-size: 11px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e293b;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-top: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* 메인 레이아웃 */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -94,9 +183,9 @@
 
         .card {
             background: #ffffff;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.08);
+            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.08);
             border: 2px solid #ede9fe;
         }
 
@@ -104,119 +193,170 @@
             font-weight: bold;
             color: #553c9a;
             font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        /* 펫 카드 영역 */
-        .pet-display {
-            text-align: center;
-            background: #faf8ff;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px dashed #d8b4fe;
             margin-bottom: 12px;
         }
 
-        .pet-avatar {
-            font-size: 50px;
-            margin-bottom: 5px;
+        /* 2. 강화 중앙 메인 디스플레이 */
+        .pet-stage {
+            position: relative;
+            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+            border-radius: 16px;
+            border: 2px dashed #fca5a5;
+            height: 230px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
         }
 
-        .pet-name {
-            font-weight: bold;
-            font-size: 16px;
-            color: #4a5568;
+        .bg-heart-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        .pet-status {
-            font-size: 12px;
-            color: #805ad5;
-            margin-bottom: 8px;
+        .floating-bg-heart {
+            position: absolute;
+            color: rgba(244, 63, 94, 0.3);
+            font-size: 20px;
+            animation: floatUp 3s infinite linear;
         }
 
-        .star-rating {
+        @keyframes floatUp {
+            0% { transform: translateY(220px) scale(0.8); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+        }
+
+        /* 부위 조합 박스 */
+        .assembled-pet-box {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            z-index: 2;
+        }
+
+        .pet-part {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .pet-part.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .huge-heart-badge {
+            position: absolute;
+            bottom: 10px;
+            background: linear-gradient(135deg, #ff4b72 0%, #ff2a55 100%);
+            color: white;
+            padding: 5px 16px;
+            border-radius: 20px;
             font-size: 14px;
-            letter-spacing: 2px;
-            color: #ecc94b;
-            margin-bottom: 10px;
-            word-break: break-all;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 42, 85, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 3;
         }
 
+        .pet-info {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .pet-name-text {
+            font-size: 17px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .pet-status-text {
+            font-size: 12px;
+            color: #e11d48;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* 3. 강화 프로그래스 바 */
         .progress-bar-container {
             width: 100%;
-            background: #edf2f7;
-            height: 8px;
-            border-radius: 4px;
+            background: #f1f5f9;
+            height: 10px;
+            border-radius: 5px;
             overflow: hidden;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .progress-bar {
-            background: #9f7aea;
+            background: linear-gradient(90deg, #f43f5e, #fb7185);
             height: 100%;
             transition: width 0.3s ease;
         }
 
         .progress-text {
             font-size: 12px;
-            color: #718096;
+            color: #64748b;
+            text-align: right;
             margin-bottom: 15px;
         }
 
+        /* 동물 선택 탭 */
         .pet-selector {
             display: flex;
             gap: 8px;
             justify-content: center;
-            margin-bottom: 10px;
         }
 
         .pet-btn {
-            background: #f7fafc;
+            background: #f8fafc;
             border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            font-size: 18px;
-            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 20px;
+            padding: 8px 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .pet-btn.active {
-            background: #ede9fe;
-            border-color: #805ad5;
+            background: #ffe4e6;
+            border-color: #f43f5e;
             transform: scale(1.1);
         }
 
-        .selector-tip {
-            font-size: 11px;
-            color: #a0aec0;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        /* 퀴즈 카드 영역 */
+        /* 퀴즈 영역 */
         .quiz-header {
             display: flex;
             justify-content: space-between;
             font-size: 13px;
             font-weight: bold;
-            color: #b7791f;
+            color: #e11d48;
             margin-bottom: 12px;
         }
 
         .quiz-question {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
-            color: #2d3748;
-            margin-bottom: 20px;
+            color: #1e293b;
+            margin-bottom: 18px;
             line-height: 1.4;
-            min-height: 50px;
+            min-height: 48px;
         }
 
         .options-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .option-btn {
@@ -226,26 +366,27 @@
             padding: 12px 15px;
             text-align: left;
             font-size: 14px;
-            color: #4a5568;
+            color: #334155;
             cursor: pointer;
             transition: all 0.2s;
         }
 
         .option-btn:hover {
-            background: #f7fafc;
+            background: #f8fafc;
             border-color: #cbd5e0;
         }
 
         .option-btn.correct {
-            background: #c6f6d5;
-            border-color: #38a169;
-            color: #22543d;
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #14532d;
+            font-weight: bold;
         }
 
         .option-btn.wrong {
-            background: #fed7d7;
-            border-color: #e53e3e;
-            color: #742a2a;
+            background: #ffe4e6;
+            border-color: #f43f5e;
+            color: #881337;
         }
 
         .quiz-footer {
@@ -254,9 +395,9 @@
         }
 
         .btn-hint {
-            background: #fefcbf;
-            border: 1px solid #ecc94b;
-            color: #744210;
+            background: #fef9c3;
+            border: 1px solid #fde047;
+            color: #854d0e;
             padding: 8px 16px;
             border-radius: 8px;
             font-size: 13px;
@@ -264,9 +405,9 @@
         }
 
         .btn-next {
-            background: #d6bcfa;
+            background: #f43f5e;
             border: none;
-            color: #44337a;
+            color: white;
             font-weight: bold;
             padding: 8px 20px;
             border-radius: 8px;
@@ -275,236 +416,283 @@
         }
 
         .btn-next:hover {
-            background: #b794f4;
-        }
-
-        /* 인벤토리 카드 */
-        .inventory-card {
-            margin-bottom: 20px;
-        }
-
-        .inventory-desc {
-            font-size: 12px;
-            color: #718096;
-            margin-bottom: 12px;
-        }
-
-        .inventory-content {
-            background: #faf8ff;
-            border: 1px dashed #d8b4fe;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .empty-inventory {
-            font-size: 12px;
-            color: #a0aec0;
+            background: #e11d48;
         }
     </style>
 </head>
 <body>
+
+    <!-- 이름 입력 팝업 -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal-box">
+            <div class="modal-title">🏰 동물원에 오신 것을 환영합니다!</div>
+            <div class="modal-desc">원장님의 이름을 입력해주세요 (서버에 저장되지 않아요)</div>
+            <input type="text" id="usernameInput" class="modal-input" placeholder="예: 이민형" maxlength="10">
+            <button class="modal-btn" onclick="startZoo()">동물원 입장하기</button>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- 헤더 영역 -->
         <header>
-            <h1>몽글몽글 이어말 동물원</h1>
-            <p>이어 주는 말을 찾아 동물 친구를 별 22개까지 키워 주세요!</p>
+            <h1 id="zooTitle">💖 몽글몽글 하트 강화 동물원</h1>
+            <p>퀴즈를 맞추어 하트를 강화하고 동물 친구들을 완성해 보세요!</p>
         </header>
 
-        <!-- 공지 배너 -->
-        <section class="banner">
-            <div class="banner-title">🌷 오늘의 동물 친구를 만나 봐요 🌷</div>
-            <div class="banner-sub">문장과 문장을 알맞게 이어 주면 별이 반짝!</div>
-            <div class="banner-reward">정답 1개 = 별 1개 ⭐</div>
+        <!-- 상단 완성된 동물원 무대 -->
+        <section class="zoo-stage-card">
+            <div class="zoo-stage-title" id="stageTitle">🌳 완성된 동물 친구들의 놀이터</div>
+            <div class="zoo-stage-animals" id="zooStageAnimals">
+                <!-- 22강 완료 동물이 왼쪽부터 차곡차곡 추가됨 -->
+            </div>
         </section>
 
         <!-- 메인 콘텐츠 영역 -->
         <div class="main-grid">
-            <!-- 왼쪽: 내가 키우는 친구 -->
-            <div class="card pet-card">
-                <div class="card-title">🌈 내가 키우는 친구</div>
-                <div class="pet-display">
-                    <div class="pet-avatar" id="petAvatar">🐰</div>
-                    <div class="pet-name" id="petName">토리 토끼</div>
-                    <div class="pet-status" id="petStatus">🌱 아직 작은 새싹이에요!</div>
-                    <div class="star-rating" id="starRating"></div>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
-                </div>
-                <div class="progress-text" id="progressText">0 / 22 별</div>
+            <!-- 왼쪽: 하트 강화 진행중인 동물 -->
+            <div class="card">
+                <div class="card-title">✨ 강화 중인 친구</div>
                 
-                <!-- 동물 선택 탭 -->
-                <div class="pet-selector" id="petSelector">
-                    <button class="pet-btn active" data-id="rabbit" data-name="토리 토끼" data-emoji="🐰">🐰</button>
-                    <button class="pet-btn" data-id="fox" data-name="포포 여우" data-emoji="🦊">🦊</button>
-                    <button class="pet-btn" data-id="cat" data-name="나비 고양이" data-emoji="🐱">🐱</button>
-                    <button class="pet-btn" data-id="panda" data-name="판다 판다" data-emoji="🐼">🐼</button>
-                    <button class="pet-btn" data-id="penguin" data-name="핑구 펭귄" data-emoji="🐧">🐧</button>
+                <div class="pet-stage">
+                    <div class="bg-heart-container" id="bgHeartContainer"></div>
+                    
+                    <!-- 22단계 조립식 동물 SVG 영역 -->
+                    <div class="assembled-pet-box">
+                        <svg viewBox="0 0 100 100" width="130" height="130">
+                            <!-- 귀 (1~3강) -->
+                            <g class="pet-part" id="part-ears">
+                                <ellipse cx="35" cy="25" rx="8" ry="20" fill="#f472b6" />
+                                <ellipse cx="65" cy="25" rx="8" ry="20" fill="#f472b6" />
+                            </g>
+                            <!-- 얼굴 윤곽 (4~6강) -->
+                            <g class="pet-part" id="part-face">
+                                <circle cx="50" cy="55" r="30" fill="#fce7f3" stroke="#f472b6" stroke-width="2"/>
+                            </g>
+                            <!-- 눈 (7~9강) -->
+                            <g class="pet-part" id="part-eyes">
+                                <circle cx="40" cy="50" r="3.5" fill="#1e293b"/>
+                                <circle cx="60" cy="50" r="3.5" fill="#1e293b"/>
+                            </g>
+                            <!-- 코와 입 (10~12강) -->
+                            <g class="pet-part" id="part-nose">
+                                <polygon points="50,56 46,52 54,52" fill="#f43f5e"/>
+                                <path d="M 46 60 Q 50 64 54 60" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+                            </g>
+                            <!-- 볼터치 (13~15강) -->
+                            <g class="pet-part" id="part-cheeks">
+                                <circle cx="33" cy="57" r="4" fill="#fda4af" opacity="0.8"/>
+                                <circle cx="67" cy="57" r="4" fill="#fda4af" opacity="0.8"/>
+                            </g>
+                            <!-- 수염 (16~18강) -->
+                            <g class="pet-part" id="part-whiskers">
+                                <line x1="20" y1="52" x2="32" y2="54" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="20" y1="58" x2="32" y2="57" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="80" y1="52" x2="68" y2="54" stroke="#94a3b8" stroke-width="1.5"/>
+                                <line x1="80" y1="58" x2="68" y2="57" stroke="#94a3b8" stroke-width="1.5"/>
+                            </g>
+                            <!-- 리본 (19~21강) -->
+                            <g class="pet-part" id="part-ribbon">
+                                <path d="M 42 78 L 58 78 L 50 83 Z" fill="#fb7185"/>
+                                <circle cx="50" cy="78" r="3" fill="#e11d48"/>
+                            </g>
+                            <!-- 왕관 (22강 최종 완성!) -->
+                            <g class="pet-part" id="part-crown">
+                                <polygon points="38,28 42,18 50,25 58,18 62,28" fill="#facc15" stroke="#eab308" stroke-width="1"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- 하트 강화 단계 표시 -->
+                    <div class="huge-heart-badge">
+                        <span>💖</span> <span id="heartLevelText">1강</span>
+                    </div>
                 </div>
-                <p class="selector-tip">동물을 바꾸어 가며 퀴즈를 풀 수 있어요. 별 22개를 모으면 인벤토리에 등록돼요!</p>
+
+                <div class="pet-info">
+                    <div class="pet-name-text" id="petName">토리 토끼</div>
+                    <div class="pet-status-text" id="petStatus">🌱 부위를 하나씩 완성 중이에요!</div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 4.5%;"></div>
+                </div>
+                <div class="progress-text" id="progressText">1 / 22 강화 완료</div>
+
+                <div class="pet-selector">
+                    <button class="pet-btn active" onclick="switchPet('rabbit', '토리 토끼', '🐰')">🐰</button>
+                    <button class="pet-btn" onclick="switchPet('fox', '포포 여우', '🦊')">🦊</button>
+                    <button class="pet-btn" onclick="switchPet('cat', '나비 고양이', '🐱')">🐱</button>
+                    <button class="pet-btn" onclick="switchPet('panda', '판다 판다', '🐼')">🐼</button>
+                    <button class="pet-btn" onclick="switchPet('penguin', '핑구 펭귄', '🐧')">🐧</button>
+                </div>
             </div>
 
-            <!-- 오른쪽: 퀴즈 영역 -->
-            <div class="card quiz-card">
+            <!-- 오른쪽: 이어말 퀴즈 -->
+            <div class="card">
                 <div class="quiz-header">
                     <span id="quizNumber">퀴즈 1</span>
-                    <span id="scoreCount">정답 0개</span>
+                    <span id="scoreCount">강화 하트 ❤️ 1개</span>
                 </div>
                 <div class="quiz-question" id="quizQuestion">
                     길이 미끄러워요. ( ) 천천히 걸으세요.
                 </div>
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
-                    <button class="btn-hint" id="hintBtn">💡 힌트</button>
-                    <button class="btn-next" id="nextBtn">다음 문제 →</button>
+                    <button class="btn-hint" onclick="showHint()">💡 힌트</button>
+                    <button class="btn-next" onclick="nextQuiz()">다음 문제 →</button>
                 </div>
             </div>
         </div>
-
-        <!-- 하단: 인벤토리 영역 -->
-        <section class="card inventory-card">
-            <div class="card-title">🛍️ 나의 동물 인벤토리</div>
-            <p class="inventory-desc">별 22개를 모은 동물은 여기에 영원히 모아 둘 수 있어요. 이 브라우저에 자동 저장됩니다.</p>
-            <div class="inventory-content" id="inventoryContent">
-                <div class="empty-inventory">아직 완성한 친구가 없어요. 동물에게 별 22개를 선물해 보세요! 🐾</div>
-            </div>
-        </section>
     </div>
 
     <script>
-        // 퀴즈 데이터 리스트
+        let userName = "원장님";
+        let heartLevel = 1;
+        const maxLevel = 22;
+        let selectedPet = { id: 'rabbit', name: '토리 토끼', emoji: '🐰' };
+        let completedPets = [];
+
         const quizData = [
             { question: "길이 미끄러워요. ( ) 천천히 걸으세요.", options: ["하지만", "그러나", "그리고", "그러니까", "왜냐하면"], answer: 3 },
             { question: "배가 고팠습니다. ( ) 냉장고를 열었습니다.", options: ["그래서", "하지만", "비록", "혹시", "그러나"], answer: 0 },
             { question: "비가 내립니다. ( ) 우산을 챙기세요.", options: ["그러므로", "그러나", "반면에", "왜냐하면", "그래도"], answer: 0 },
             { question: "열심히 공부했다. ( ) 시험에 합격했다.", options: ["그러나", "그 결과", "반면에", "하지만", "또는"], answer: 1 }
         ];
-
         let currentQuizIndex = 0;
-        let stars = 0;
-        const maxStars = 22;
-        let selectedPet = { id: 'rabbit', name: '토리 토끼', emoji: '🐰' };
-        let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
 
-        // DOM 요소
-        const petAvatar = document.getElementById('petAvatar');
-        const petName = document.getElementById('petName');
-        const starRating = document.getElementById('starRating');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const quizNumber = document.getElementById('quizNumber');
-        const scoreCount = document.getElementById('scoreCount');
-        const quizQuestion = document.getElementById('quizQuestion');
-        const optionsList = document.getElementById('optionsList');
-        const nextBtn = document.getElementById('nextBtn');
-        const hintBtn = document.getElementById('hintBtn');
-        const inventoryContent = document.getElementById('inventoryContent');
+        // 1. 입장 시 이름 설정
+        function startZoo() {
+            const input = document.getElementById('usernameInput').value.trim();
+            if (input !== "") {
+                userName = input;
+            } else {
+                userName = "이민형"; // 기본 이름 예시
+            }
+            document.getElementById('nameModal').style.display = 'none';
+            document.getElementById('zooTitle').innerText = `💖 ${userName}의 동물원`;
+            document.getElementById('stageTitle').innerText = `🌳 ${userName} 원장님의 동물 놀이터`;
+            init();
+        }
 
         function init() {
             loadQuiz();
-            updatePetUI();
-            renderInventory();
+            updateUI();
         }
 
+        // 2. 퀴즈 시스템
         function loadQuiz() {
             const current = quizData[currentQuizIndex % quizData.length];
-            quizNumber.innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
-            quizQuestion.innerText = current.question;
+            document.getElementById('quizNumber').innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
+            document.getElementById('quizQuestion').innerText = current.question;
+            
+            const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = "";
 
             current.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
-                btn.classList.add('option-btn');
+                btn.className = 'option-btn';
                 btn.innerText = `${idx + 1}. ${opt}`;
                 btn.onclick = () => checkAnswer(idx, current.answer, btn);
                 optionsList.appendChild(btn);
             });
         }
 
-        function checkAnswer(selected, correct, btnElement) {
-            const buttons = optionsList.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.disabled = true);
+        function checkAnswer(selected, correct, btn) {
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach(b => b.disabled = true);
 
             if (selected === correct) {
-                btnElement.classList.add('correct');
-                if (stars < maxStars) {
-                    stars++;
-                    updatePetUI();
+                btn.classList.add('correct');
+                if (heartLevel < maxLevel) {
+                    heartLevel++;
+                    updateUI();
                 }
-                scoreCount.innerText = `정답 ${stars}개`;
-                
-                if (stars === maxStars && !inventory.includes(selectedPet.name)) {
-                    inventory.push(selectedPet.name);
-                    localStorage.setItem('animalInventory', JSON.stringify(inventory));
-                    renderInventory();
-                    alert(`🎉 축하합니다! ${selectedPet.name} 친구가 별 22개를 모아 인벤토리에 등록되었습니다!`);
+
+                if (heartLevel === maxLevel && !completedPets.includes(selectedPet.name)) {
+                    completedPets.push(selectedPet.name);
+                    renderZooStage();
+                    alert(`🎉 축하합니다! ${selectedPet.name}의 하트가 22강으로 최대로 강화되어 ${userName} 원장님의 동물원에 들어왔습니다!`);
                 }
             } else {
-                btnElement.classList.add('wrong');
-                buttons[correct].classList.add('correct');
+                btn.classList.add('wrong');
+                btns[correct].classList.add('correct');
             }
         }
 
-        nextBtn.onclick = () => {
+        function nextQuiz() {
             currentQuizIndex++;
             loadQuiz();
-        };
+        }
 
-        hintBtn.onclick = () => {
-            alert("💡 힌트: 앞 문장의 원인이나 이유가 될 수 있는 이어 주는 말을 골라보세요!");
-        };
+        function showHint() {
+            alert("💡 힌트: 앞 문장의 원인이나 이유가 되는 연결어를 선택해 보세요!");
+        }
 
-        function updatePetUI() {
-            petAvatar.innerText = selectedPet.emoji;
-            petName.innerText = selectedPet.name;
+        // 3. UI 및 부위별 조합 업데이트
+        function updateUI() {
+            document.getElementById('petName').innerText = selectedPet.name;
+            document.getElementById('heartLevelText').innerText = `${heartLevel}강`;
+            document.getElementById('scoreCount').innerText = `강화 하트 ❤️ ${heartLevel}개`;
+
+            // 프로그래스바
+            const percent = (heartLevel / maxLevel) * 100;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel} 강화 완료`;
+
+            // 배경 두둥실 하트 생성 (하트 레벨 수만큼 생성)
+            const bgContainer = document.getElementById('bgHeartContainer');
+            bgContainer.innerHTML = "";
+            for (let i = 0; i < heartLevel; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-bg-heart';
+                heart.innerText = '💖';
+                heart.style.left = `${Math.random() * 85 + 5}%`;
+                heart.style.animationDuration = `${2 + Math.random() * 2}s`;
+                heart.style.animationDelay = `${Math.random() * 2}s`;
+                bgContainer.appendChild(heart);
+            }
+
+            // 부위별 조립 (강화 레벨에 따라 순차적 커짐)
+            setPartActive('part-ears', heartLevel >= 3);
+            setPartActive('part-face', heartLevel >= 6);
+            setPartActive('part-eyes', heartLevel >= 9);
+            setPartActive('part-nose', heartLevel >= 12);
+            setPartActive('part-cheeks', heartLevel >= 15);
+            setPartActive('part-whiskers', heartLevel >= 18);
+            setPartActive('part-ribbon', heartLevel >= 21);
+            setPartActive('part-crown', heartLevel >= 22);
+        }
+
+        function setPartActive(id, active) {
+            const el = document.getElementById(id);
+            if (active) el.classList.add('active');
+            else el.classList.remove('active');
+        }
+
+        function switchPet(id, name, emoji) {
+            selectedPet = { id, name, emoji };
+            heartLevel = 1;
+            updateUI();
             
-            let starsString = "";
-            for (let i = 0; i < maxStars; i++) {
-                starsString += (i < stars) ? "⭐" : "☆";
-            }
-            starRating.innerText = starsString;
-
-            let percent = (stars / maxStars) * 100;
-            progressBar.style.width = `${percent}%`;
-            progressText.innerText = `${stars} / ${maxStars} 별`;
+            // 버튼 활성화 표시
+            const btns = document.querySelectorAll('.pet-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
         }
 
-        document.querySelectorAll('.pet-btn').forEach(button => {
-            button.onclick = () => {
-                document.querySelectorAll('.pet-btn').forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-                
-                selectedPet = {
-                    id: button.getAttribute('data-id'),
-                    name: button.getAttribute('data-name'),
-                    emoji: button.getAttribute('data-emoji')
-                };
-                stars = 0;
-                scoreCount.innerText = `정답 ${stars}개`;
-                updatePetUI();
-            };
-        });
-
-        function renderInventory() {
-            if (inventory.length === 0) {
-                inventoryContent.innerHTML = `<div class="empty-inventory">아직 완성한 친구가 없어요. 동물에게 별 22개를 선물해 보세요! 🐾</div>`;
-            } else {
-                inventoryContent.innerHTML = "";
-                inventory.forEach(pet => {
-                    const badge = document.createElement('div');
-                    badge.style.cssText = "background: #fff; border: 1px solid #d8b4fe; padding: 8px 14px; border-radius: 12px; font-weight: bold; color: #6b46c1; display: inline-block; margin: 4px;";
-                    badge.innerText = `🏆 ${pet} 완료!`;
-                    inventoryContent.appendChild(badge);
-                });
-            }
+        // 4. 완성된 동물원 무대 렌더링
+        function renderZooStage() {
+            const stage = document.getElementById('zooStageAnimals');
+            stage.innerHTML = "";
+            completedPets.forEach(petName => {
+                const petDiv = document.createElement('div');
+                petDiv.className = 'zoo-stage-pet';
+                petDiv.innerHTML = `
+                    <div class="zoo-stage-pet-avatar">🐰</div>
+                    <div class="zoo-stage-pet-name">${petName}</div>
+                `;
+                stage.appendChild(petDiv);
+            });
         }
-
-        init();
     </script>
 </body>
 </html>
