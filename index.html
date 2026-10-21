@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>몽글몽글 하트 강화 동물원</title>
     <style>
-        /* THE노란리본miri 및 손글씨 폰트 적용 */
+        /* THE노란리본miri 폰트 우선 적용 및 백업 폰트 설정 */
         @font-face {
             font-family: 'THE노란리본miri';
             src: local('THE노란리본miri'), local('THE노란리본'), local('THE Yellow Ribbon Miri');
@@ -19,12 +19,12 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'THE노란리본miri', 'THE노란리본', 'KyoboHandwriting2020A', sans-serif;
+            font-family: 'THE노란리본miri', 'THE노란리본', 'KyoboHandwriting2020A', sans-serif !important;
             user-select: none;
         }
 
         body {
-            background-color: #f7f3fd;
+            background-color: #fcf4ff;
             color: #333;
             display: flex;
             justify-content: center;
@@ -39,11 +39,11 @@
             gap: 20px;
         }
 
-        /* 0. 모달 스타일 */
+        /* 이름 입력 모달 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
@@ -57,9 +57,9 @@
             border-radius: 24px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-            border: 3px solid #f43f5e;
+            max-width: 380px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border: 3px solid #ff758f;
             animation: popIn 0.3s ease;
         }
 
@@ -69,14 +69,14 @@
         }
 
         .modal-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
-            color: #f43f5e;
+            color: #ff758f;
             margin-bottom: 8px;
         }
 
         .modal-desc {
-            font-size: 14px;
+            font-size: 15px;
             color: #64748b;
             margin-bottom: 20px;
             line-height: 1.4;
@@ -85,29 +85,29 @@
         .modal-input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 12px;
-            font-size: 16px;
+            border: 2px solid #ffb3c1;
+            border-radius: 14px;
+            font-size: 18px;
             text-align: center;
             outline: none;
             margin-bottom: 15px;
         }
 
         .modal-input:focus {
-            border-color: #f43f5e;
+            border-color: #ff758f;
         }
 
         .modal-btn {
             width: 100%;
-            background: linear-gradient(135deg, #f43f5e, #fb7185);
+            background: linear-gradient(135deg, #ff758f, #ff8fa3);
             color: white;
             border: none;
             padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 14px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 117, 143, 0.3);
         }
 
         header {
@@ -115,21 +115,21 @@
         }
 
         header h1 {
-            color: #6b46c1;
-            font-size: 28px;
+            color: #805ad5;
+            font-size: 32px;
             margin-bottom: 4px;
         }
 
         header p {
-            color: #666;
-            font-size: 14px;
+            color: #718096;
+            font-size: 16px;
         }
 
-        /* 1. 상단 완성된 동물원 무대 */
+        /* 상단 완성된 동물원 무대 */
         .zoo-stage-card {
-            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 60%, #86efac 60%, #4ade80 100%);
+            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 55%, #bbf7d0 55%, #86efac 100%);
             border: 3px solid #7dd3fc;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 15px;
             min-height: 140px;
             position: relative;
@@ -146,21 +146,21 @@
 
         .zoo-stage-title {
             background: rgba(255, 255, 255, 0.95);
-            padding: 5px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 6px 16px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: bold;
-            color: #0369a1;
+            color: #0284c7;
         }
 
         .total-pet-count {
-            background: #facc15;
+            background: #fde047;
             color: #713f12;
-            padding: 5px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 6px 16px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
 
         .zoo-stage-animals {
@@ -180,17 +180,17 @@
         }
 
         .zoo-stage-pet-avatar {
-            font-size: 42px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+            font-size: 44px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
         }
 
         .zoo-stage-pet-name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             background: rgba(255, 255, 255, 0.95);
             color: #1e293b;
-            padding: 2px 8px;
-            border-radius: 8px;
+            padding: 3px 10px;
+            border-radius: 10px;
             margin-top: 2px;
             white-space: nowrap;
         }
@@ -215,26 +215,26 @@
 
         .card {
             background: #ffffff;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.08);
-            border: 2px solid #ede9fe;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(128, 90, 213, 0.08);
+            border: 2px solid #f3e8ff;
             position: relative;
         }
 
         .card-title {
             font-weight: bold;
-            color: #553c9a;
-            font-size: 17px;
+            color: #7e22ce;
+            font-size: 19px;
             margin-bottom: 12px;
         }
 
-        /* 2. 강화 중앙 무대 */
+        /* 하트 강화 무대 애니메이션 */
         .pet-stage {
             position: relative;
-            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
-            border-radius: 16px;
-            border: 2px dashed #fca5a5;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+            border-radius: 20px;
+            border: 2px dashed #ffb3c1;
             height: 230px;
             display: flex;
             flex-direction: column;
@@ -242,16 +242,20 @@
             justify-content: center;
             overflow: hidden;
             margin-bottom: 15px;
+            transition: all 0.3s ease;
         }
 
-        .pet-stage.enhancing {
-            animation: enhancePulse 0.8s ease-in-out;
+        .pet-stage.enhance-anim {
+            animation: heartEnhanceFx 0.8s ease-in-out;
+            border-color: #ff4d6d;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.6);
         }
 
-        @keyframes enhancePulse {
+        @keyframes heartEnhanceFx {
             0% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.05); filter: brightness(1.3) drop-shadow(0 0 15px #f43f5e); }
-            100% { transform: scale(1); filter: brightness(1); }
+            30% { transform: scale(1.08) rotate(-3deg); filter: brightness(1.3) drop-shadow(0 0 20px #ff4d6d); }
+            60% { transform: scale(1.1) rotate(3deg); filter: brightness(1.4) drop-shadow(0 0 30px #ff0054); }
+            100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
         }
 
         .bg-heart-container {
@@ -263,8 +267,8 @@
 
         .floating-bg-heart {
             position: absolute;
-            color: rgba(244, 63, 94, 0.35);
-            font-size: 22px;
+            color: rgba(255, 77, 109, 0.35);
+            font-size: 24px;
             animation: floatUp 3s infinite linear;
         }
 
@@ -272,35 +276,6 @@
             0% { transform: translateY(220px) scale(0.8); opacity: 0; }
             50% { opacity: 0.9; }
             100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
-        }
-
-        .enhance-result-banner {
-            position: absolute;
-            top: 15px;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 15px;
-            z-index: 10;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .enhance-result-banner.success {
-            background: #22c55e;
-            color: white;
-            opacity: 1;
-            transform: translateY(0);
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-        }
-
-        .enhance-result-banner.fail {
-            background: #ef4444;
-            color: white;
-            opacity: 1;
-            transform: translateY(0);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
         }
 
         .assembled-pet-box {
@@ -327,17 +302,22 @@
         .huge-heart-badge {
             position: absolute;
             bottom: 10px;
-            background: linear-gradient(135deg, #ff4b72 0%, #ff2a55 100%);
+            background: linear-gradient(135deg, #ff4d6d 0%, #ff0054 100%);
             color: white;
-            padding: 6px 18px;
+            padding: 6px 20px;
             border-radius: 20px;
-            font-size: 15px;
+            font-size: 17px;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(255, 42, 85, 0.3);
+            box-shadow: 0 4px 10px rgba(255, 0, 84, 0.3);
             display: flex;
             align-items: center;
             gap: 6px;
             z-index: 3;
+            transition: transform 0.3s ease;
+        }
+
+        .pet-stage.enhance-anim .huge-heart-badge {
+            transform: scale(1.2);
         }
 
         .pet-info {
@@ -346,16 +326,16 @@
         }
 
         .pet-name-text {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #334155;
         }
 
         .pet-status-text {
-            font-size: 13px;
-            color: #e11d48;
-            margin-top: 2px;
-            font-weight: 500;
+            font-size: 14px;
+            color: #ff4d6d;
+            margin-top: 3px;
+            font-weight: bold;
         }
 
         .progress-bar-container {
@@ -368,13 +348,13 @@
         }
 
         .progress-bar {
-            background: linear-gradient(90deg, #f43f5e, #fb7185);
+            background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
             height: 100%;
             transition: width 0.3s ease;
         }
 
         .progress-text {
-            font-size: 13px;
+            font-size: 14px;
             color: #64748b;
             text-align: right;
         }
@@ -383,55 +363,86 @@
         .quiz-header {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
-            color: #e11d48;
-            margin-bottom: 12px;
+            color: #ff4d6d;
+            margin-bottom: 8px;
+        }
+
+        /* 강화 결과 안내 박스 */
+        .quiz-result-message {
+            min-height: 28px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            display: none;
+            text-align: center;
+        }
+
+        .quiz-result-message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 2px solid #86efac;
+        }
+
+        .quiz-result-message.fail {
+            display: block;
+            background: #ffe4e6;
+            color: #991b1b;
+            border: 2px solid #fca5a5;
         }
 
         .quiz-question {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #1e293b;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             line-height: 1.4;
             min-height: 52px;
+            background: #fcf4ff;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px dashed #d8b4fe;
         }
 
+        /* 3지 선다형 보기 리스트 */
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-bottom: 18px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .option-btn {
             background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px 18px;
             text-align: left;
-            font-size: 15px;
+            font-size: 17px;
             color: #334155;
             cursor: pointer;
             transition: all 0.2s;
+            font-weight: bold;
         }
 
         .option-btn:hover {
-            background: #f8fafc;
-            border-color: #cbd5e0;
+            background: #fdf4ff;
+            border-color: #d8b4fe;
         }
 
         .option-btn.correct {
             background: #dcfce7;
             border-color: #22c55e;
             color: #14532d;
-            font-weight: bold;
         }
 
         .option-btn.wrong {
             background: #ffe4e6;
-            border-color: #f43f5e;
+            border-color: #ff4d6d;
             color: #881337;
         }
 
@@ -442,26 +453,28 @@
 
         .btn-hint {
             background: #fef9c3;
-            border: 1px solid #fde047;
+            border: 2px solid #fde047;
             color: #854d0e;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
             cursor: pointer;
         }
 
         .btn-next {
-            background: #f43f5e;
+            background: linear-gradient(135deg, #ff4d6d, #ff758f);
             border: none;
             color: white;
             font-weight: bold;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.25);
         }
 
-        /* 인벤토리 카운트 및 영역 */
+        /* 하단 인벤토리 */
         .inventory-card {
             margin-top: 10px;
         }
@@ -474,19 +487,19 @@
         }
 
         .inventory-content {
-            background: #faf8ff;
+            background: #fdf4ff;
             border: 2px dashed #d8b4fe;
-            border-radius: 14px;
+            border-radius: 18px;
             padding: 18px;
             min-height: 90px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .empty-inventory {
-            font-size: 13px;
+            font-size: 15px;
             color: #a0aec0;
             width: 100%;
             text-align: center;
@@ -495,43 +508,43 @@
         .inventory-badge {
             background: #ffffff;
             border: 2px solid #c084fc;
-            padding: 8px 16px;
-            border-radius: 14px;
+            padding: 8px 18px;
+            border-radius: 16px;
             font-weight: bold;
             color: #7e22ce;
-            box-shadow: 0 2px 6px rgba(126, 34, 206, 0.1);
+            box-shadow: 0 2px 6px rgba(126, 34, 206, 0.08);
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 14px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 입장 시 이름 입력 팝업 -->
+    <!-- 1. 이름 입력 모달 -->
     <div class="modal-overlay" id="nameModal">
         <div class="modal-box">
-            <div class="modal-title">🏰 동물원에 오신 것을 환영합니다!</div>
-            <div class="modal-desc">원장님의 이름을 입력해 주세요 (예: 이민형)</div>
+            <div class="modal-title">🏰 동물원에 오신 것을 환영해요!</div>
+            <div class="modal-desc">원장님의 이름을 알려주세요 💕</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="이민형" maxlength="10">
-            <button class="modal-btn" onclick="startZoo()">동물원 입장하기</button>
+            <button class="modal-btn" onclick="startZoo()">동물원 입장하기 🐾</button>
         </div>
     </div>
 
-    <!-- 2. 완성 성공 축하 모달 -->
+    <!-- 2. 완성 축하 모달 -->
     <div class="modal-overlay" id="completionModal" style="display: none;">
         <div class="modal-box">
-            <div class="modal-title">🎉 22강 완성을 축하합니다!</div>
-            <div class="modal-desc" id="completionDesc">동물 친구가 내 인벤토리에 보관되었습니다!</div>
-            <button class="modal-btn" onclick="continueZoo()">이어서 또 모아볼까요? 🐾</button>
+            <div class="modal-title">🎉 22강 완성 축하해요!</div>
+            <div class="modal-desc" id="completionDesc">동물 친구가 내 인벤토리에 들어왔어요!</div>
+            <button class="modal-btn" onclick="continueZoo()">이어서 또 모아볼까요? 💖</button>
         </div>
     </div>
 
     <div class="container">
         <header>
             <h1 id="zooTitle">💖 몽글몽글 하트 강화 동물원</h1>
-            <p>이어 주는 말을 맞추고 랜덤으로 나타나는 동물의 하트를 강화해 보세요!</p>
+            <p>알맞은 이어주는 말을 골라 뽀작한 동물 친구들을 완성해 보세요!</p>
         </header>
 
         <!-- 상단 완성된 동물원 무대 -->
@@ -545,12 +558,11 @@
 
         <!-- 메인 콘텐츠 영역 -->
         <div class="main-grid">
-            <!-- 왼쪽: 랜덤 등장 동물 강화 박스 -->
+            <!-- 왼쪽: 강화 무대 -->
             <div class="card">
-                <div class="card-title">✨ 렌덤으로 나타난 강화 친구</div>
+                <div class="card-title">✨ 하트 강화 도전 중!</div>
                 
                 <div class="pet-stage" id="petStage">
-                    <div class="enhance-result-banner" id="enhanceResultBanner">SUCCESS!</div>
                     <div class="bg-heart-container" id="bgHeartContainer"></div>
                     
                     <div class="assembled-pet-box">
@@ -571,7 +583,7 @@
                             </g>
                             <!-- 코와 입 (10~12강) -->
                             <g class="pet-part" id="part-nose">
-                                <polygon points="50,56 46,52 54,52" fill="#f43f5e"/>
+                                <polygon points="50,56 46,52 54,52" fill="#ff4d6d"/>
                                 <path d="M 46 60 Q 50 64 54 60" fill="none" stroke="#1e293b" stroke-width="1.5"/>
                             </g>
                             <!-- 볼터치 (13~15강) -->
@@ -588,10 +600,10 @@
                             </g>
                             <!-- 리본 (19~21강) -->
                             <g class="pet-part" id="part-ribbon">
-                                <path d="M 42 78 L 58 78 L 50 83 Z" fill="#fb7185"/>
-                                <circle cx="50" cy="78" r="3" fill="#e11d48"/>
+                                <path d="M 42 78 L 58 78 L 50 83 Z" fill="#ff758f"/>
+                                <circle cx="50" cy="78" r="3" fill="#ff0054"/>
                             </g>
-                            <!-- 왕관 (22강 최종 완성!) -->
+                            <!-- 왕관 (22강 최종) -->
                             <g class="pet-part" id="part-crown">
                                 <polygon points="38,28 42,18 50,25 58,18 62,28" fill="#facc15" stroke="#eab308" stroke-width="1"/>
                             </g>
@@ -614,29 +626,33 @@
                 <div class="progress-text" id="progressText">1 / 22 강화 완료</div>
             </div>
 
-            <!-- 오른쪽: 이어말 퀴즈 -->
+            <!-- 오른쪽: 퀴즈 영역 (3지선다형) -->
             <div class="card">
                 <div class="quiz-header">
                     <span id="quizNumber">퀴즈 1</span>
                     <span id="scoreCount">강화 하트 ❤️ 1개</span>
                 </div>
+
+                <!-- 강화 확률 메시지 -->
+                <div class="quiz-result-message" id="quizResultMessage"></div>
+
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
-                    <button class="btn-hint" onclick="showHint()">💡 힌트</button>
+                    <button class="btn-hint" onclick="showHint()">💡 힌트 보기</button>
                     <button class="btn-next" onclick="nextQuiz()">다음 문제 →</button>
                 </div>
             </div>
         </div>
 
-        <!-- 하단: 나의 동물 인벤토리 -->
+        <!-- 하단 인벤토리 -->
         <section class="card inventory-card">
             <div class="inventory-header">
                 <div class="card-title" style="margin-bottom:0;">🛍️ 나의 동물 인벤토리</div>
                 <div class="total-pet-count" id="bottomTotalPetCount">모은 동물 총 0마리</div>
             </div>
             <div class="inventory-content" id="inventoryContent">
-                <div class="empty-inventory">아직 22강에 성공한 완성된 친구가 없어요. 강화에 도전해보세요! 🐾</div>
+                <div class="empty-inventory">아직 완성한 동물 친구가 없어요. 강화에 도전해보세요! 🐾</div>
             </div>
         </section>
     </div>
@@ -646,7 +662,6 @@
         let heartLevel = 1;
         const maxLevel = 22;
         
-        // 랜덤 등장 가능한 동물 목록
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰' },
             { id: 'fox', name: '포포 여우', emoji: '🦊' },
@@ -654,28 +669,25 @@
             { id: 'panda', name: '판다 판다', emoji: '🐼' },
             { id: 'penguin', name: '핑구 펭귄', emoji: '🐧' },
             { id: 'bear', name: '베어 곰', emoji: '🐻' },
-            { id: 'frog', name: '개굴 개구리', emoji: '🐸' },
-            { id: 'chick', name: '삐약 병아리', emoji: '🐥' },
-            { id: 'elephant', name: '끼끼 코끼리', emoji: '🐘' }
+            { id: 'chick', name: '삐약 병아리', emoji: '🐥' }
         ];
         
         let selectedPet = animalPool[0];
         let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
 
-        // 풍부해진 이어주는 말 문제 은행
+        // 초등/유치원 맞춤 귀엽고 자연스러운 3지선다 퀴즈 목록
         const quizData = [
-            { question: "길이 미끄러워요. ( ) 천천히 걸으세요.", options: ["하지만", "그러나", "그리고", "그러니까", "왜냐하면"], answer: 3, hint: "원인에 대한 행동 결과를 말해주는 단어예요!" },
-            { question: "배가 고팠습니다. ( ) 냉장고를 열었습니다.", options: ["그래서", "하지만", "비록", "혹시", "그러나"], answer: 0, hint: "앞 사건의 당연한 다음 결과예요." },
-            { question: "비가 내리기 시작했습니다. ( ) 우산을 펼쳤습니다.", options: ["그러나", "그러므로", "반면에", "혹시나", "왜냐하면"], answer: 1, hint: "상황에 맞는 행동을 나타내요." },
-            { question: "열심히 공부했습니다. ( ) 시험을 아주 잘 봤습니다.", options: ["그 결과", "하지만", "그런데", "아니면", "그래도"], answer: 0, hint: "노력에 따른 긍정적 결과를 뜻해요." },
-            { question: "날씨가 매우 춥습니다. ( ) 따뜻한 옷을 입으세요.", options: ["그러니까", "하지만", "반대로", "왜냐하면", "그런데"], answer: 0, hint: "추운 원인 때문에 할 행동이에요." },
-            { question: "열심히 달렸습니다. ( ) 약속 시간에 늦지 않았습니다.", options: ["다행히", "그러나", "왜냐하면", "게다가", "오히려"], answer: 0, hint: "노력 덕분에 발생한 좋은 결과예요!" },
-            { question: "음식이 맛있어 보입니다. ( ) 배가 불러 먹을 수 없습니다.", options: ["하지만", "그래서", "그러므로", "따라서", "게다가"], answer: 0, hint: "앞뒤 내용이 상반되는 접속어예요." },
-            { question: "바람이 붑니다. ( ) 날씨도 쌀쌀합니다.", options: ["게다가", "그러나", "하지만", "그렇지만", "반면에"], answer: 0, hint: "나쁜 조건이 겹칠 때 쓰는 이어주는 말이에요." }
+            { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
+            { question: "밖에는 비가 와요. ( ) 우산을 썼어요.", options: ["그리고", "그래서", "그러나"], answer: 1, hint: "비가 오니까 할 일을 생각해보세요!" },
+            { question: "사탕을 먹고 싶었어요. ( ) 사탕이 없었어요.", options: ["하지만", "그러니까", "왜냐하면"], answer: 0, hint: "원하는 것과 반대 상황을 이어줘요!" },
+            { question: "열심히 달렸어요. ( ) 1등을 했어요!", options: ["그러자", "그래서", "하지만"], answer: 1, hint: "열심히 노력해서 기분 좋은 결과가 나왔어요!" },
+            { question: "장난감을 가지고 놀았어요. ( ) 깨끗이 정리했어요.", options: ["그리고", "왜냐하면", "그러나"], answer: 0, hint: "놀고 나서 이어서 한 일을 순서대로 연결해요." },
+            { question: "손을 깨끗이 씻었어요. ( ) 감기에 걸리지 않아요.", options: ["그러니까", "하지만", "비록"], answer: 0, hint: "좋은 습관 덕분에 생기는 이유예요!" },
+            { question: "오늘 내 생일이에요. ( ) 친구들이 축하해 줬어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "기쁜 생일날 일어난 일을 이어줘요!" },
+            { question: "바람이 쌩쌩 불어요. ( ) 날씨가 무척 추워요.", options: ["게다가", "하지만", "왜냐하면"], answer: 0, hint: "추운데 바람까지 부는 상황을 더해줘요." }
         ];
         let currentQuizIndex = 0;
 
-        // 1. 동물원 시작
         function startZoo() {
             const input = document.getElementById('usernameInput').value.trim();
             if (input !== "") userName = input;
@@ -688,7 +700,6 @@
             init();
         }
 
-        // 2. 랜덤 동물 뽑기
         function pickRandomPet() {
             const randomIndex = Math.floor(Math.random() * animalPool.length);
             selectedPet = animalPool[randomIndex];
@@ -701,15 +712,19 @@
             renderZooStageAndInventory();
         }
 
-        // 3. 퀴즈 세팅
         function loadQuiz() {
             const current = quizData[currentQuizIndex % quizData.length];
             document.getElementById('quizNumber').innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
             document.getElementById('quizQuestion').innerText = current.question;
             
+            const msgBox = document.getElementById('quizResultMessage');
+            msgBox.className = "quiz-result-message";
+            msgBox.innerText = "";
+
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = "";
 
+            // 3지 선다형 보기 렌더링
             current.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -719,26 +734,27 @@
             });
         }
 
-        // 4. 정답 판정 및 강화 확률 처리
         function checkAnswer(selected, correct, btn) {
             const btns = document.querySelectorAll('.option-btn');
             btns.forEach(b => b.disabled = true);
 
+            const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
+            const isSuccess = (Math.random() * 100) <= successRate;
+            const msgBox = document.getElementById('quizResultMessage');
+
             if (selected === correct) {
                 btn.classList.add('correct');
                 
-                // 강화 확률 계산 (단계가 올라갈수록 미세하게 어려워짐)
-                const successRate = Math.max(50, 85 - (heartLevel * 1.5));
-                const isSuccess = (Math.random() * 100) <= successRate;
-
-                triggerEnhanceEffect(isSuccess);
+                triggerHeartEnhanceAnimation();
 
                 if (isSuccess) {
                     if (heartLevel < maxLevel) {
                         heartLevel++;
                     }
                     
-                    // 22강 최종 완료 시
+                    msgBox.className = "quiz-result-message success";
+                    msgBox.innerText = `✨ 우와! ${successRate}% 확률로 강화 성공! (${heartLevel}강 달성)`;
+
                     if (heartLevel === maxLevel) {
                         const itemStr = `${selectedPet.emoji} ${selectedPet.name}`;
                         if (!inventory.includes(itemStr)) {
@@ -748,41 +764,34 @@
                         renderZooStageAndInventory();
                         
                         setTimeout(() => {
-                            document.getElementById('completionDesc').innerText = `🎉 축하합니다! ${selectedPet.name} 친구가 22강 하트를 완성하여 ${userName} 원장님의 인벤토리에 보관되었습니다!`;
+                            document.getElementById('completionDesc').innerText = `🎉 축하합니다! ${selectedPet.name} 친구가 22강 하트를 완성하여 ${userName} 원장님의 인벤토리에 보관되었어요!`;
                             document.getElementById('completionModal').style.display = 'flex';
                         }, 800);
                     }
+                } else {
+                    msgBox.className = "quiz-result-message fail";
+                    msgBox.innerText = `🥺 정답이지만 ${successRate}% 확률을 못 뚫어서 실패했어요...`;
                 }
             } else {
                 btn.classList.add('wrong');
                 btns[correct].classList.add('correct');
-                triggerEnhanceEffect(false);
-            }
-        }
-
-        // 5. 강화 연출 애니메이션
-        function triggerEnhanceEffect(isSuccess) {
-            const petStage = document.getElementById('petStage');
-            const banner = document.getElementById('enhanceResultBanner');
-
-            petStage.classList.add('enhancing');
-            setTimeout(() => petStage.classList.remove('enhancing'), 800);
-
-            if (isSuccess) {
-                banner.innerText = "SUCCESS! 하트 강화 성공 🎉";
-                banner.className = "enhance-result-banner success";
-            } else {
-                banner.innerText = "FAIL! 강화 실패 💥 (새 문제 전환)";
-                banner.className = "enhance-result-banner fail";
+                
+                msgBox.className = "quiz-result-message fail";
+                msgBox.innerText = `❌ 아쉬워요! 틀려서 강화에 실패했어요...`;
             }
 
             setTimeout(() => {
-                banner.className = "enhance-result-banner";
                 updateUI();
-                if (!isSuccess) {
-                    nextQuiz(); // 실패 시 문제 자동 교체
-                }
-            }, 1200);
+            }, 500);
+        }
+
+        function triggerHeartEnhanceAnimation() {
+            const petStage = document.getElementById('petStage');
+            petStage.classList.add('enhance-anim');
+            
+            setTimeout(() => {
+                petStage.classList.remove('enhance-anim');
+            }, 800);
         }
 
         function nextQuiz() {
@@ -795,7 +804,6 @@
             alert(`💡 힌트: ${current.hint}`);
         }
 
-        // 6. UI 및 부위 업데이트
         function updateUI() {
             document.getElementById('petName').innerText = selectedPet.name;
             document.getElementById('heartLevelText').innerText = `${heartLevel}강`;
@@ -808,7 +816,6 @@
             document.getElementById('progressBar').style.width = `${percent}%`;
             document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel} 강화 완료`;
 
-            // 배경 두둥실 하트
             const bgContainer = document.getElementById('bgHeartContainer');
             bgContainer.innerHTML = "";
             for (let i = 0; i < heartLevel; i++) {
@@ -821,7 +828,6 @@
                 bgContainer.appendChild(heart);
             }
 
-            // 부위별 커짐
             setPartActive('part-ears', heartLevel >= 3);
             setPartActive('part-face', heartLevel >= 6);
             setPartActive('part-eyes', heartLevel >= 9);
@@ -838,7 +844,6 @@
             else el.classList.remove('active');
         }
 
-        // 7. 이어서 모으기 버튼 클릭 시
         function continueZoo() {
             document.getElementById('completionModal').style.display = 'none';
             pickRandomPet();
@@ -846,7 +851,6 @@
             updateUI();
         }
 
-        // 8. 상단 무대 및 인벤토리 카운트 렌더링
         function renderZooStageAndInventory() {
             const stage = document.getElementById('zooStageAnimals');
             const inventoryContent = document.getElementById('inventoryContent');
@@ -859,10 +863,9 @@
             inventoryContent.innerHTML = "";
 
             if (inventory.length === 0) {
-                inventoryContent.innerHTML = `<div class="empty-inventory">아직 22강에 성공한 완성된 친구가 없어요. 강화에 도전해보세요! 🐾</div>`;
+                inventoryContent.innerHTML = `<div class="empty-inventory">아직 완성한 동물 친구가 없어요. 강화에 도전해보세요! 🐾</div>`;
             } else {
                 inventory.forEach(item => {
-                    // 상단 무대 추가
                     const stagePet = document.createElement('div');
                     stagePet.className = 'zoo-stage-pet';
                     stagePet.innerHTML = `
@@ -871,7 +874,6 @@
                     `;
                     stage.appendChild(stagePet);
 
-                    // 하단 인벤토리 배지 추가
                     const badge = document.createElement('div');
                     badge.className = 'inventory-badge';
                     badge.innerText = `🏆 ${item} 완료!`;
