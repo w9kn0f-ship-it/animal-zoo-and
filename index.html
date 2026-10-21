@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이어주는 말 동물원</title>
     <style>
-        /* 가독성이 뛰어나고 깔끔하게 이쁜 프리텐다드 웹폰트 적용 */
+        /* 가독성이 뛰어나고 깔끔한 프리텐다드 웹폰트 적용 */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
         * {
@@ -350,7 +350,7 @@
             font-weight: bold;
         }
 
-        /* 오른쪽 퀴즈 영역 및 전체 차단 오버레이 */
+        /* 오른쪽 퀴즈 영역 및 오버레이 */
         .quiz-card {
             position: relative;
             overflow: hidden;
@@ -473,7 +473,7 @@
             cursor: not-allowed;
         }
 
-        /* 오답 안내 / 강화 진행 오버레이 화면 */
+        /* 강화 연출 오버레이 */
         .quiz-enhance-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -550,22 +550,12 @@
             font-weight: 600;
         }
 
-        .quiz-enhance-overlay.success .enhance-status-title {
-            color: #166534;
-        }
-
-        .quiz-enhance-overlay.fail .enhance-status-title {
-            color: #991b1b;
-        }
-
-        .quiz-enhance-overlay.wrong .enhance-status-title {
-            color: #b91c1c;
-        }
+        .quiz-enhance-overlay.success .enhance-status-title { color: #166534; }
+        .quiz-enhance-overlay.fail .enhance-status-title { color: #991b1b; }
+        .quiz-enhance-overlay.wrong .enhance-status-title { color: #b91c1c; }
 
         /* 하단 인벤토리 */
-        .inventory-card {
-            margin-top: 10px;
-        }
+        .inventory-card { margin-top: 10px; }
 
         .inventory-header {
             display: flex;
@@ -682,7 +672,7 @@
                 <div class="progress-text" id="progressText">1 / 15성 달성</div>
             </div>
 
-            <!-- 오른쪽: 퀴즈 영역 & 강화/오답 연출 화면 -->
+            <!-- 오른쪽: 퀴즈 영역 & 오버레이 -->
             <div class="card quiz-card">
                 <div class="quiz-enhance-overlay" id="quizEnhanceOverlay">
                     <div class="enhance-heart-icon" id="enhanceHeartIcon">💖</div>
@@ -697,7 +687,6 @@
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 
-                <!-- 인라인 힌트 및 미풀이 경고 박스 -->
                 <div class="hint-box" id="hintBox"></div>
                 <div class="warning-box" id="warningBox">문제를 아직 풀지 않았어요! 정답을 골라주세요. 🐾</div>
 
@@ -741,37 +730,40 @@
         let selectedPet = animalPool[0];
         let inventory = [];
 
+        // 선지가 '그래서', '그러나', '그리고' 3가지로 완전 통일된 30개의 다채로운 문제 세트
         const quizData = [
-            { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
-            { question: "밖에는 비가 와요. ( ) 우산을 썼어요.", options: ["그리고", "그래서", "그러나"], answer: 1, hint: "비가 오니까 할 일을 생각해보세요!" },
-            { question: "사탕을 먹고 싶었어요. ( ) 사탕이 없었어요.", options: ["하지만", "그러니까", "왜냐하면"], answer: 0, hint: "원하는 것과 반대 상황을 이어줘요!" },
-            { question: "열심히 달렸어요. ( ) 1등을 했어요!", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "열심히 노력해서 기분 좋은 결과가 나왔어요!" },
-            { question: "장난감을 가지고 놀았어요. ( ) 깨끗이 정리했어요.", options: ["그리고", "왜냐하면", "그러나"], answer: 0, hint: "놀고 나서 이어서 한 일을 순서대로 연결해요." },
-            { question: "손을 깨끗이 씻었어요. ( ) 감기에 걸리지 않아요.", options: ["그러니까", "하지만", "비록"], answer: 0, hint: "좋은 습관 덕분에 생기는 이유예요!" },
-            { question: "오늘 내 생일이에요. ( ) 친구들이 축하해 줬어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "기쁜 생일날 일어난 일을 이어줘요!" },
-            { question: "바람이 쌩쌩 불어요. ( ) 날씨가 무척 추워요.", options: ["게다가", "하지만", "왜냐하면"], answer: 0, hint: "추운데 바람까지 부는 상황을 더해줘요." },
-            { question: "아침 일찍 일어났어요. ( ) 학교에 늦지 않았어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "일찍 일어난 덕분에 일어난 좋은 결과예요!" },
-            { question: "공부가 너무 재미있어요. ( ) 매일 책을 읽어요.", options: ["그러니까", "하지만", "아니면"], answer: 0, hint: "재미있어서 계속하게 되는 이유를 이어줘요." },
-            { question: "축구 경기를 했어요. ( ) 아쉽게 졌어요.", options: ["하지만", "그래서", "그리고"], answer: 0, hint: "열심히 했지만 반대의 결과가 나온 상황이에요." },
-            { question: "눈이 하얗게 내렸어요. ( ) 친구들과 눈사람을 만들었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "눈이 와서 한 신나는 놀이를 연결해요." },
-            { question: "어두운 밤이 되었어요. ( ) 하늘에 별이 반짝여요.", options: ["그리고", "하지만", "그러므로"], answer: 0, hint: "밤이 되어 일어난 자연스러운 모습이에요." },
-            { question: "키가 많이 컸어요. ( ) 옷이 작아졌어요.", options: ["그래서", "그러나", "아니면"], answer: 0, hint: "키가 크면서 생겨난 변화를 이어줘요." },
-            { question: "약속 시간에 늦었어요. ( ) 씽씽 달렸어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "늦어서 서두르게 된 행동을 나타내요." },
-            { question: "노래를 크게 불렀어요. ( ) 목이 아팠어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "노래를 크게 부른 뒤 나타난 결과예요." },
-            { question: "동생이 넘어졌어요. ( ) 손을 잡고 일으켜 줬어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "동생을 도와준 다정한 마음을 나타내요." },
-            { question: "달콤한 수박을 먹었어요. ( ) 기분이 참 좋았어요.", options: ["그래서", "하지만", "비록"], answer: 0, hint: "맛있는 걸 먹은 뒤 좋아진 기분을 표현해요." },
-            { question: "목이 무척 말랐어요. ( ) 시원한 물을 마셨어요.", options: ["그래서", "그러나", "아니면"], answer: 0, hint: "목이 말라서 한 알맞은 행동이에요." },
-            { question: "놀이공원에 갔어요. ( ) 정말 신나게 놀았어요.", options: ["그리고", "하지만", "왜냐하면"], answer: 0, hint: "놀이공원에서 한 일을 순서대로 이어줘요." },
-            { question: "열심히 그림을 그렸어요. ( ) 상을 받았어요!", options: ["그 결과", "하지만", "아니면"], answer: 0, hint: "정성껏 그린 그림 덕분에 일어난 일이에요." },
-            { question: "날씨가 화창해요. ( ) 산책을 하러 나갔어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "좋은 날씨에 어울리는 행동을 연결해요." },
-            { question: "어려운 퀴즈를 맞혔어요. ( ) 기쁨의 환호를 질렀어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "퀴즈를 맞혀 기쁜 마음을 나타내요." },
-            { question: "신발을 혼자 신었어요. ( ) 부모님이 칭찬해 주셨어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "스스로 해내어 칭찬받은 기쁜 상황이에요." },
-            { question: "치카치카 양치를 했어요. ( ) 이빨이 반짝반짝 깨끗해요.", options: ["그래서", "하지만", "비록"], answer: 0, hint: "양치를 열심히 한 결과를 말해요." },
-            { question: "컴퓨터 게임을 오래 했어요. ( ) 눈이 피곤해졌어요.", options: ["그러자", "하지만", "아니면"], answer: 0, hint: "오래 게임을 한 뒤 나타난 변화예요." },
-            { question: "비빔밥이 조금 매웠어요. ( ) 맛있게 다 먹었어요.", options: ["하지만", "그래서", "그러니까"], answer: 0, hint: "매웠지만 끝까지 맛있게 먹은 상황이에요." },
-            { question: "선생님 말씀에 귀를 기울였어요. ( ) 문제 답을 잘 알 수 있었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "집중해서 들어서 알게 된 유용한 결과예요." },
-            { question: "꽃에 물을 정성껏 주었어요. ( ) 예쁜 꽃이 활짝 피었어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "정성 어린 보살핌 뒤 피어난 예쁜 모습이에요." },
-            { question: "친구가 슬퍼하고 있었어요. ( ) 따뜻하게 안아 주었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "슬픈 친구를 위로해 주는 고마운 행동이에요." }
+            { question: "배가 너무 고팠어요. ( ) 빵을 하나 맛있게 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "배가 고파서 생긴 알맞은 결과를 연결해요!" },
+            { question: "밖에는 비가 많이 내려요. ( ) 우산을 꼭 챙겨서 나갔어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "비가 내려서 한 행동을 연결해요!" },
+            { question: "열심히 달리기 연습을 했어요. ( ) 1등 상장을 받았습니다.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "열심히 노력한 결과로 일어난 일이에요!" },
+            { question: "키가 많이 자랐어요. ( ) 작아진 옷을 동생에게 주었어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "키가 커서 생겨난 행동을 나타내요!" },
+            { question: "손을 치카치카 양치했어요. ( ) 이빨이 반짝반짝 깨끗해졌어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "양치를 정성껏 한 결과를 이어줘요!" },
+            { question: "날씨가 맑고 포근해요. ( ) 공원으로 산책을 다녀왔어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "좋은 날씨 덕분에 나들이를 간 상황이에요." },
+            { question: "어려운 퀴즈 정답을 맞혔어요. ( ) 기분 좋게 만세를 불렀어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "퀴즈를 맞히고 기뻐서 한 행동이에요." },
+            { question: "오늘 내 생일이에요. ( ) 친구들이 생일 축하 노래를 불러줬어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "기쁜 생일날에 일어난 일을 이어줘요." },
+            { question: "목이 무척 말랐어요. ( ) 시원한 물을 벌컥벌컥 마셨어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "목이 말라서 한 알맞은 행동이에요!" },
+            { question: "신발을 혼자서 척척 신었어요. ( ) 부모님께 칭찬을 받았어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "스스로 해내어 칭찬받은 기쁜 결과예요." },
+
+            { question: "장난감을 신나게 가지고 놀았어요. ( ) 상자에 깨끗이 정리했어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "놀고 나서 이어서 한 일을 순서대로 붙여줘요." },
+            { question: "어두운 밤이 되었어요. ( ) 하늘에 예쁜 별들이 떠올랐어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "밤이 되고 나서 보이는 자연스러운 풍경이에요." },
+            { question: "달콤한 수박을 먹었어요. ( ) 바나나도 맛있게 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "맛있는 과일들을 함께 덧붙여 말해요." },
+            { question: "놀이공원에 놀러 갔어요. ( ) 놀이기구를 재미있게 탔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "놀이공원에서 한 즐거운 일들을 나열해요." },
+            { question: "동생의 손을 잡았어요. ( ) 같이 도란도란 걸어갔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "동생과 함께 한 행동을 이어서 설명해요." },
+            { question: "정성껏 그림을 그렸어요. ( ) 예쁘게 알록달록 색칠도 했어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "그림을 그리고 다음 순서로 색칠한 상황이에요." },
+            { question: "따뜻한 옷을 입었어요. ( ) 모자까지 푹 눌러썼어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "옷에 더해 모자까지 쓴 모습을 나열해요." },
+            { question: "선생님께 인사를 드렸어요. ( ) 교실에 웃으며 들어갔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "인사하고 이어서 교실에 들어가는 행동이에요." },
+            { question: "도서관에서 재미있는 책을 읽었어요. ( ) 독서록도 작성했어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "책을 읽고 이어서 한 활동을 이어줘요." },
+            { question: "새 신발을 갈아신었어요. ( ) 밖으로 신나게 달려 나갔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "신발을 신고 바로 이어한 신나는 행동이에요." },
+
+            { question: "맛있는 장난감을 먹고 싶었어요. ( ) 그 상점에는 없었어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "원하는 생각과 반대 상황이 일어났을 때 쓰는 말이에요!" },
+            { question: "열심히 달리기 경주를 했어요. ( ) 아쉽게 넘어지고 말았어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "열심히 했지만 안타깝게 반대의 결과가 나왔어요." },
+            { question: "비빔밥이 조금 매웠어요. ( ) 남기지 않고 맛있게 다 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "매웠지만 끝까지 포기하지 않고 다 먹은 상황이에요." },
+            { question: "약속 시간에 조금 늦었어요. ( ) 친구는 웃으며 기다려주었어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "늦었지만 다행히 친절하게 기다려준 상황이에요." },
+            { question: "밖에는 바람이 쌩쌩 불어요. ( ) 집 안은 아주 따뜻해요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "추운 밖과 따뜻한 집 안의 반대되는 모습을 비교해요." },
+            { question: "슬픈 영화를 보았어요. ( ) 마지막에는 기쁘게 웃었어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "처음의 슬픈 마음과 반대로 기쁘게 끝난 상황이에요." },
+            { question: "피아노 연습이 조금 어려웠어요. ( ) 포기하지 않고 계속했어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "어려움에도 불구하고 계속 도전한 이야기예요." },
+            { question: "귀여운 강아지가 짖었어요. ( ) 무섭지 않고 아주 귀여웠어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "짖어서 무서울 줄 알았는데 반대로 귀여웠던 상황이에요." },
+            { question: "잠을 자려고 누웠어요. ( ) 정신이 더욱 또렷해졌어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "자려고 한 행동과 반대의 현상이 나타났어요!" },
+            { question: "비가 오지 않을 줄 알았어요. ( ) 갑자기 소나기가 내려쳤어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "예상했던 상황과 다른 날씨가 펼쳐졌어요!" }
         ];
         let currentQuizIndex = 0;
 
