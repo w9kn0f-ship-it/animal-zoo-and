@@ -379,17 +379,33 @@
             letter-spacing: -0.3px;
         }
 
-        /* 인라인 힌트 박스 */
-        .hint-box {
+        /* 인라인 힌트 및 미풀이 경고 박스 */
+        .hint-box, .warning-box {
             display: none;
-            background: #fef9c3;
-            border: 2px solid #fde047;
-            color: #854d0e;
             padding: 10px 14px;
             border-radius: 12px;
             font-size: 15px;
             margin-bottom: 15px;
             font-weight: 700;
+        }
+
+        .hint-box {
+            background: #fef9c3;
+            border: 2px solid #fde047;
+            color: #854d0e;
+        }
+
+        .warning-box {
+            background: #fee2e2;
+            border: 2px solid #fca5a5;
+            color: #991b1b;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         .options-list {
@@ -410,11 +426,6 @@
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 700;
-        }
-
-        .option-btn:hover:not(:disabled) {
-            background: #fdf4ff;
-            border-color: #d8b4fe;
         }
 
         .option-btn.correct {
@@ -686,7 +697,9 @@
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 
+                <!-- 인라인 힌트 및 미풀이 경고 박스 -->
                 <div class="hint-box" id="hintBox"></div>
+                <div class="warning-box" id="warningBox">문제를 아직 풀지 않았어요! 정답을 골라주세요. 🐾</div>
 
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
@@ -726,7 +739,7 @@
         ];
         
         let selectedPet = animalPool[0];
-        let inventory = []; // 새로고침 시 초기화되도록 메모리 배열로만 관리
+        let inventory = [];
 
         const quizData = [
             { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
@@ -833,6 +846,9 @@
             hintBox.style.display = 'none';
             hintBox.innerText = `💡 힌트: ${current.hint}`;
 
+            const warningBox = document.getElementById('warningBox');
+            warningBox.style.display = 'none';
+
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = "";
 
@@ -849,6 +865,8 @@
             if (isEnhancing || hasAnsweredCurrent) return;
             hasAnsweredCurrent = true;
             isEnhancing = true;
+
+            document.getElementById('warningBox').style.display = 'none';
 
             const btns = document.querySelectorAll('.option-btn');
             btns.forEach(b => b.disabled = true);
@@ -937,7 +955,8 @@
             if (isEnhancing) return;
             
             if (!hasAnsweredCurrent) {
-                alert("문제를 아직 풀지 않았어요! 정답을 골라주세요. 🐾");
+                const warningBox = document.getElementById('warningBox');
+                warningBox.style.display = 'block';
                 return;
             }
 
