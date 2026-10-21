@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이어주는 말 동물원</title>
     <style>
-        /* 확실하고 이쁜 동글동글 귀여운 손글씨 웹폰트 */
-        @font-face {
-            font-family: 'KyoboHandwriting2020A';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/KyoboHandwriting2020A.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
+        /* 가독성이 뛰어나고 깔끔하게 이쁜 프리텐다드 웹폰트 적용 */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'KyoboHandwriting2020A', cursive, sans-serif !important;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif !important;
             user-select: none;
         }
 
@@ -67,14 +62,14 @@
         }
 
         .modal-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             color: #ff758f;
             margin-bottom: 8px;
         }
 
         .modal-desc {
-            font-size: 17px;
+            font-size: 16px;
             color: #64748b;
             margin-bottom: 20px;
             line-height: 1.4;
@@ -85,10 +80,11 @@
             padding: 12px;
             border: 2px solid #ffb3c1;
             border-radius: 14px;
-            font-size: 20px;
+            font-size: 18px;
             text-align: center;
             outline: none;
             margin-bottom: 15px;
+            font-weight: 600;
         }
 
         .modal-input:focus {
@@ -102,7 +98,7 @@
             border: none;
             padding: 14px;
             border-radius: 14px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 117, 143, 0.3);
@@ -114,13 +110,15 @@
 
         header h1 {
             color: #805ad5;
-            font-size: 36px;
+            font-size: 32px;
+            font-weight: 800;
             margin-bottom: 4px;
         }
 
         header p {
             color: #718096;
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         /* 상단 완성된 동물원 무대 */
@@ -146,7 +144,7 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 6px 16px;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #0284c7;
         }
@@ -156,7 +154,7 @@
             color: #713f12;
             padding: 6px 16px;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
@@ -183,7 +181,7 @@
         }
 
         .zoo-stage-pet-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             background: rgba(255, 255, 255, 0.95);
             color: #1e293b;
@@ -221,9 +219,9 @@
         }
 
         .card-title {
-            font-weight: bold;
+            font-weight: 800;
             color: #7e22ce;
-            font-size: 22px;
+            font-size: 20px;
             margin-bottom: 12px;
         }
 
@@ -290,7 +288,7 @@
             color: white;
             padding: 6px 20px;
             border-radius: 20px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(255, 0, 84, 0.3);
             display: flex;
@@ -305,16 +303,16 @@
         }
 
         .pet-name-text {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 800;
             color: #334155;
         }
 
         .pet-status-text {
-            font-size: 16px;
+            font-size: 15px;
             color: #ff4d6d;
             margin-top: 3px;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         /* 5-5-5 컬러 하트 게이지바 영역 */
@@ -346,7 +344,7 @@
         }
 
         .progress-text {
-            font-size: 15px;
+            font-size: 14px;
             color: #64748b;
             text-align: right;
             font-weight: bold;
@@ -361,15 +359,15 @@
         .quiz-header {
             display: flex;
             justify-content: space-between;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: #ff4d6d;
             margin-bottom: 8px;
         }
 
         .quiz-question {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             color: #1e293b;
             margin-bottom: 15px;
             line-height: 1.5;
@@ -381,6 +379,7 @@
             letter-spacing: -0.3px;
         }
 
+        /* 인라인 힌트 박스 */
         .hint-box {
             display: none;
             background: #fef9c3;
@@ -388,9 +387,9 @@
             color: #854d0e;
             padding: 10px 14px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 15px;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .options-list {
@@ -406,11 +405,11 @@
             border-radius: 14px;
             padding: 14px 18px;
             text-align: left;
-            font-size: 18px;
+            font-size: 17px;
             color: #334155;
             cursor: pointer;
             transition: all 0.2s;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .option-btn:hover:not(:disabled) {
@@ -441,7 +440,7 @@
             color: #854d0e;
             padding: 10px 18px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -453,7 +452,7 @@
             font-weight: bold;
             padding: 10px 22px;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 77, 109, 0.25);
         }
@@ -463,6 +462,7 @@
             cursor: not-allowed;
         }
 
+        /* 오답 안내 / 강화 진행 오버레이 화면 */
         .quiz-enhance-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -526,16 +526,17 @@
         }
 
         .enhance-status-title {
-            font-size: 26px;
-            font-weight: bold;
+            font-size: 24px;
+            font-weight: 800;
             color: #ff4d6d;
             margin-bottom: 6px;
         }
 
         .enhance-status-sub {
-            font-size: 17px;
+            font-size: 16px;
             color: #64748b;
             line-height: 1.4;
+            font-weight: 600;
         }
 
         .quiz-enhance-overlay.success .enhance-status-title {
@@ -575,10 +576,11 @@
         }
 
         .empty-inventory {
-            font-size: 16px;
+            font-size: 15px;
             color: #a0aec0;
             width: 100%;
             text-align: center;
+            font-weight: 600;
         }
 
         .inventory-badge {
@@ -592,7 +594,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 17px;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -711,6 +713,7 @@
         let heartLevel = 1;
         const maxLevel = 15;
         let isEnhancing = false;
+        let hasAnsweredCurrent = false; // 문제를 풀었는지 여부 체크 플래그
         
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
@@ -821,6 +824,7 @@
         }
 
         function loadQuiz() {
+            hasAnsweredCurrent = false; // 새 문제 로드시 풀지 않은 상태로 초기화
             const current = quizData[currentQuizIndex % quizData.length];
             document.getElementById('quizNumber').innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
             document.getElementById('quizQuestion').innerText = current.question;
@@ -842,7 +846,8 @@
         }
 
         function checkAnswer(selected, correct, btn) {
-            if (isEnhancing) return;
+            if (isEnhancing || hasAnsweredCurrent) return;
+            hasAnsweredCurrent = true; // 풀었음 체크
             isEnhancing = true;
 
             const btns = document.querySelectorAll('.option-btn');
@@ -929,8 +934,15 @@
             loadQuiz();
         }
 
+        // 문제를 풀지 않고 다음 문제를 누를 때 경고 메시지 출력
         function nextQuiz() {
             if (isEnhancing) return;
+            
+            if (!hasAnsweredCurrent) {
+                alert("문제를 아직 풀지 않았어요! 정답을 골라주세요. 🐾");
+                return;
+            }
+
             currentQuizIndex = Math.floor(Math.random() * quizData.length);
             loadQuiz();
         }
@@ -955,15 +967,14 @@
 
             document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel}성 달성`;
 
-            // 5-5-5 컬러 하트 게이지바 렌더링 (다양한 알록달록 색상 적용)
+            // 5-5-5 컬러 하트 게이지바 렌더링
             const gaugeContainer = document.getElementById('heartGaugeContainer');
             gaugeContainer.innerHTML = "";
             
-            // 5개씩 3줄 (총 15성)
             const heartColors = [
-                '#ff4d6d', '#ff758f', '#fb7185', '#f43f5e', '#e11d48', // 1~5성 (핑크레드톤)
-                '#a855f7', '#9333ea', '#7e22ce', '#6b21a8', '#581c87', // 6~10성 (퍼플톤)
-                '#3b82f6', '#2563eb', '#1d4ed8', '#0284c7', '#0ea5e9'  // 11~15성 (블루하늘톤)
+                '#ff4d6d', '#ff758f', '#fb7185', '#f43f5e', '#e11d48',
+                '#a855f7', '#9333ea', '#7e22ce', '#6b21a8', '#581c87',
+                '#3b82f6', '#2563eb', '#1d4ed8', '#0284c7', '#0ea5e9'
             ];
 
             for (let row = 0; row < 3; row++) {
@@ -980,7 +991,7 @@
                         heartSpan.innerText = '💖';
                         heartSpan.style.color = heartColors[currentIdx - 1];
                     } else {
-                        heartSpan.innerText = '🤍'; // 빈 하트
+                        heartSpan.innerText = '🤍';
                         heartSpan.style.opacity = '0.4';
                     }
                     rowDiv.appendChild(heartSpan);
