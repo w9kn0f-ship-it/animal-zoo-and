@@ -713,7 +713,7 @@
         let heartLevel = 1;
         const maxLevel = 15;
         let isEnhancing = false;
-        let hasAnsweredCurrent = false; // 문제를 풀었는지 여부 체크 플래그
+        let hasAnsweredCurrent = false;
         
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
@@ -726,7 +726,7 @@
         ];
         
         let selectedPet = animalPool[0];
-        let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
+        let inventory = []; // 새로고침 시 초기화되도록 메모리 배열로만 관리
 
         const quizData = [
             { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
@@ -824,7 +824,7 @@
         }
 
         function loadQuiz() {
-            hasAnsweredCurrent = false; // 새 문제 로드시 풀지 않은 상태로 초기화
+            hasAnsweredCurrent = false;
             const current = quizData[currentQuizIndex % quizData.length];
             document.getElementById('quizNumber').innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
             document.getElementById('quizQuestion').innerText = current.question;
@@ -847,7 +847,7 @@
 
         function checkAnswer(selected, correct, btn) {
             if (isEnhancing || hasAnsweredCurrent) return;
-            hasAnsweredCurrent = true; // 풀었음 체크
+            hasAnsweredCurrent = true;
             isEnhancing = true;
 
             const btns = document.querySelectorAll('.option-btn');
@@ -884,7 +884,6 @@
                             const itemStr = `${selectedPet.emoji} ${selectedPet.name}`;
                             if (!inventory.includes(itemStr)) {
                                 inventory.push(itemStr);
-                                localStorage.setItem('animalInventory', JSON.stringify(inventory));
                             }
                             renderZooStageAndInventory();
                             
@@ -934,7 +933,6 @@
             loadQuiz();
         }
 
-        // 문제를 풀지 않고 다음 문제를 누를 때 경고 메시지 출력
         function nextQuiz() {
             if (isEnhancing) return;
             
@@ -967,7 +965,6 @@
 
             document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel}성 달성`;
 
-            // 5-5-5 컬러 하트 게이지바 렌더링
             const gaugeContainer = document.getElementById('heartGaugeContainer');
             gaugeContainer.innerHTML = "";
             
