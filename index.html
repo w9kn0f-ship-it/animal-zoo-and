@@ -5,21 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이어주는 말 동물원</title>
     <style>
-        /* THE노란리본miri 폰트 및 백업 손글씨 폰트 */
-        @font-face {
-            font-family: 'THE노란리본miri';
-            src: local('THE노란리본miri'), local('THE노란리본'), local('THE Yellow Ribbon Miri');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/KyoboHandwriting2020A.woff');
+        /* 동글동글하고 귀여우면서도 가독성 높은 웹폰트 불러오기 */
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Surround.woff');
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff');
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'THE노란리본miri', 'THE노란리본', 'KyoboHandwriting2020A', sans-serif !important;
+            font-family: 'Cafe24Surround', 'GmarketSansMedium', sans-serif !important;
             user-select: none;
         }
 
@@ -118,6 +112,7 @@
             color: #805ad5;
             font-size: 32px;
             margin-bottom: 4px;
+            letter-spacing: -0.5px;
         }
 
         header p {
@@ -229,7 +224,7 @@
             margin-bottom: 12px;
         }
 
-        /* 하트 강화 무대 애니메이션 영역 */
+        /* 왼쪽 동물 무대 */
         .pet-stage {
             position: relative;
             background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
@@ -242,80 +237,6 @@
             justify-content: center;
             overflow: hidden;
             margin-bottom: 15px;
-        }
-
-        /* 하트 강화 연출 오버레이 패널 */
-        .enhance-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(4px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-
-        .enhance-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .enhance-heart-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .enhance-overlay.processing .enhance-heart-icon {
-            animation: enhanceSpin 1s infinite linear;
-        }
-
-        .enhance-overlay.success .enhance-heart-icon {
-            animation: enhanceSuccessGlow 0.6s infinite alternate;
-            filter: drop-shadow(0 0 25px #ff0054);
-            transform: scale(1.3);
-        }
-
-        .enhance-overlay.fail .enhance-heart-icon {
-            animation: enhanceFailBreak 0.5s ease forwards;
-            filter: grayscale(1) drop-shadow(0 0 10px #000);
-        }
-
-        @keyframes enhanceSpin {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.2) rotate(180deg); }
-            100% { transform: scale(1) rotate(360deg); }
-        }
-
-        @keyframes enhanceSuccessGlow {
-            0% { transform: scale(1.2); }
-            100% { transform: scale(1.4); }
-        }
-
-        @keyframes enhanceFailBreak {
-            0% { transform: scale(1) rotate(0deg); }
-            20% { transform: scale(1.2) rotate(-10deg); }
-            40% { transform: scale(0.9) rotate(10deg); }
-            100% { transform: scale(0.7) rotate(20deg); opacity: 0.5; }
-        }
-
-        .enhance-status-text {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff4d6d;
-        }
-
-        .enhance-overlay.success .enhance-status-text {
-            color: #166534;
-        }
-
-        .enhance-overlay.fail .enhance-status-text {
-            color: #991b1b;
         }
 
         .bg-heart-container {
@@ -414,7 +335,12 @@
             text-align: right;
         }
 
-        /* 퀴즈 영역 */
+        /* 오른쪽 퀴즈 영역 및 전체 차단 오버레이 */
+        .quiz-card {
+            position: relative;
+            overflow: hidden;
+        }
+
         .quiz-header {
             display: flex;
             justify-content: space-between;
@@ -429,15 +355,15 @@
             font-weight: bold;
             color: #1e293b;
             margin-bottom: 20px;
-            line-height: 1.4;
+            line-height: 1.5;
             min-height: 52px;
             background: #fcf4ff;
-            padding: 12px;
+            padding: 14px;
             border-radius: 16px;
             border: 1px dashed #d8b4fe;
+            letter-spacing: -0.3px;
         }
 
-        /* 3지 선다형 보기 */
         .options-list {
             display: flex;
             flex-direction: column;
@@ -458,7 +384,7 @@
             font-weight: bold;
         }
 
-        .option-btn:hover {
+        .option-btn:hover:not(:disabled) {
             background: #fdf4ff;
             border-color: #d8b4fe;
         }
@@ -501,6 +427,92 @@
             font-size: 15px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 77, 109, 0.25);
+        }
+
+        .btn-next:disabled, .btn-hint:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 오른쪽 퀴즈 창 전체를 덮는 강화 애니메이션 화면 */
+        .quiz-enhance-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            border-radius: 24px;
+        }
+
+        .quiz-enhance-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .enhance-heart-icon {
+            font-size: 70px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-enhance-overlay.processing .enhance-heart-icon {
+            animation: enhanceSpin 1s infinite linear;
+        }
+
+        .quiz-enhance-overlay.success .enhance-heart-icon {
+            animation: enhanceSuccessGlow 0.6s infinite alternate;
+            filter: drop-shadow(0 0 30px #ff0054);
+            transform: scale(1.3);
+        }
+
+        .quiz-enhance-overlay.fail .enhance-heart-icon {
+            animation: enhanceFailBreak 0.5s ease forwards;
+            filter: grayscale(1) drop-shadow(0 0 10px #000);
+        }
+
+        @keyframes enhanceSpin {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        @keyframes enhanceSuccessGlow {
+            0% { transform: scale(1.2); }
+            100% { transform: scale(1.4); }
+        }
+
+        @keyframes enhanceFailBreak {
+            0% { transform: scale(1) rotate(0deg); }
+            20% { transform: scale(1.2) rotate(-10deg); }
+            40% { transform: scale(0.9) rotate(10deg); }
+            100% { transform: scale(0.7) rotate(20deg); opacity: 0.5; }
+        }
+
+        .enhance-status-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ff4d6d;
+            margin-bottom: 6px;
+        }
+
+        .enhance-status-sub {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .quiz-enhance-overlay.success .enhance-status-title {
+            color: #166534;
+        }
+
+        .quiz-enhance-overlay.fail .enhance-status-title {
+            color: #991b1b;
         }
 
         /* 하단 인벤토리 */
@@ -592,56 +604,18 @@
                 <div class="card-title">✨ 하트 강화 도전 중!</div>
                 
                 <div class="pet-stage" id="petStage">
-                    <!-- 중간 강화 애니메이션 연출 레이어 -->
-                    <div class="enhance-overlay" id="enhanceOverlay">
-                        <div class="enhance-heart-icon" id="enhanceHeartIcon">💖</div>
-                        <div class="enhance-status-text" id="enhanceStatusText">강화 진행 중...</div>
-                    </div>
-
                     <div class="bg-heart-container" id="bgHeartContainer"></div>
                     
                     <div class="assembled-pet-box">
                         <svg viewBox="0 0 100 100" width="130" height="130">
-                            <!-- 귀 (1~3강) -->
-                            <g class="pet-part" id="part-ears">
-                                <ellipse cx="35" cy="25" rx="8" ry="20" fill="#f472b6" />
-                                <ellipse cx="65" cy="25" rx="8" ry="20" fill="#f472b6" />
-                            </g>
-                            <!-- 얼굴 윤곽 (4~6강) -->
-                            <g class="pet-part" id="part-face">
-                                <circle cx="50" cy="55" r="30" fill="#fce7f3" stroke="#f472b6" stroke-width="2"/>
-                            </g>
-                            <!-- 눈 (7~9강) -->
-                            <g class="pet-part" id="part-eyes">
-                                <circle cx="40" cy="50" r="3.5" fill="#1e293b"/>
-                                <circle cx="60" cy="50" r="3.5" fill="#1e293b"/>
-                            </g>
-                            <!-- 코와 입 (10~12강) -->
-                            <g class="pet-part" id="part-nose">
-                                <polygon points="50,56 46,52 54,52" fill="#ff4d6d"/>
-                                <path d="M 46 60 Q 50 64 54 60" fill="none" stroke="#1e293b" stroke-width="1.5"/>
-                            </g>
-                            <!-- 볼터치 (13~15강) -->
-                            <g class="pet-part" id="part-cheeks">
-                                <circle cx="33" cy="57" r="4" fill="#fda4af" opacity="0.8"/>
-                                <circle cx="67" cy="57" r="4" fill="#fda4af" opacity="0.8"/>
-                            </g>
-                            <!-- 수염 (16~18강) -->
-                            <g class="pet-part" id="part-whiskers">
-                                <line x1="20" y1="52" x2="32" y2="54" stroke="#94a3b8" stroke-width="1.5"/>
-                                <line x1="20" y1="58" x2="32" y2="57" stroke="#94a3b8" stroke-width="1.5"/>
-                                <line x1="80" y1="52" x2="68" y2="54" stroke="#94a3b8" stroke-width="1.5"/>
-                                <line x1="80" y1="58" x2="68" y2="57" stroke="#94a3b8" stroke-width="1.5"/>
-                            </g>
-                            <!-- 리본 (19~21강) -->
-                            <g class="pet-part" id="part-ribbon">
-                                <path d="M 42 78 L 58 78 L 50 83 Z" fill="#ff758f"/>
-                                <circle cx="50" cy="78" r="3" fill="#ff0054"/>
-                            </g>
-                            <!-- 왕관 (22강 최종) -->
-                            <g class="pet-part" id="part-crown">
-                                <polygon points="38,28 42,18 50,25 58,18 62,28" fill="#facc15" stroke="#eab308" stroke-width="1"/>
-                            </g>
+                            <g class="pet-part" id="part-ears"></g>
+                            <g class="pet-part" id="part-face"></g>
+                            <g class="pet-part" id="part-eyes"></g>
+                            <g class="pet-part" id="part-nose"></g>
+                            <g class="pet-part" id="part-cheeks"></g>
+                            <g class="pet-part" id="part-whiskers"></g>
+                            <g class="pet-part" id="part-ribbon"></g>
+                            <g class="pet-part" id="part-crown"></g>
                         </svg>
                     </div>
 
@@ -651,7 +625,7 @@
                 </div>
 
                 <div class="pet-info">
-                    <div class="pet-name-text" id="petName">토리 토끼</div>
+                    <div class="pet-name-text" id="petName">포포 여우</div>
                     <div class="pet-status-text" id="petStatus">🌱 성공 확률: 85% 하트 강화 도전!</div>
                 </div>
 
@@ -661,8 +635,14 @@
                 <div class="progress-text" id="progressText">1 / 22 강화 완료</div>
             </div>
 
-            <!-- 오른쪽: 퀴즈 영역 -->
-            <div class="card">
+            <!-- 오른쪽: 퀴즈 영역 & 강화 연출 화면 -->
+            <div class="card quiz-card">
+                <div class="quiz-enhance-overlay" id="quizEnhanceOverlay">
+                    <div class="enhance-heart-icon" id="enhanceHeartIcon">💖</div>
+                    <div class="enhance-status-title" id="enhanceStatusTitle">하트 강화 진행 중...</div>
+                    <div class="enhance-status-sub" id="enhanceStatusSub">잠시만 기다려 주세요!</div>
+                </div>
+
                 <div class="quiz-header">
                     <span id="quizNumber">퀴즈 1</span>
                     <span id="scoreCount">강화 하트 ❤️ 1개</span>
@@ -671,8 +651,8 @@
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
-                    <button class="btn-hint" onclick="showHint()">💡 힌트 보기</button>
-                    <button class="btn-next" onclick="nextQuiz()">다음 문제 →</button>
+                    <button class="btn-hint" id="hintBtn" onclick="showHint()">💡 힌트 보기</button>
+                    <button class="btn-next" id="nextBtn" onclick="nextQuiz()">다음 문제 →</button>
                 </div>
             </div>
         </div>
@@ -693,15 +673,16 @@
         let userName = "이민형";
         let heartLevel = 1;
         const maxLevel = 22;
+        let isEnhancing = false;
         
         const animalPool = [
-            { id: 'rabbit', name: '토리 토끼', emoji: '🐰' },
-            { id: 'fox', name: '포포 여우', emoji: '🦊' },
-            { id: 'cat', name: '나비 고양이', emoji: '🐱' },
-            { id: 'panda', name: '판다 판다', emoji: '🐼' },
-            { id: 'penguin', name: '핑구 펭귄', emoji: '🐧' },
-            { id: 'bear', name: '베어 곰', emoji: '🐻' },
-            { id: 'chick', name: '삐약 병아리', emoji: '🐥' }
+            { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
+            { id: 'fox', name: '포포 여우', emoji: '🦊', earColor: '#f97316', faceColor: '#ffedd5' },
+            { id: 'cat', name: '나비 고양이', emoji: '🐱', earColor: '#fbbf24', faceColor: '#fef3c7' },
+            { id: 'panda', name: '판다 판다', emoji: '🐼', earColor: '#1e293b', faceColor: '#ffffff' },
+            { id: 'penguin', name: '핑구 펭귄', emoji: '🐧', earColor: '#38bdf8', faceColor: '#e0f2fe' },
+            { id: 'bear', name: '베어 곰', emoji: '🐻', earColor: '#a16207', faceColor: '#fef3c7' },
+            { id: 'chick', name: '삐약 병아리', emoji: '🐥', earColor: '#facc15', faceColor: '#fef08a' }
         ];
         
         let selectedPet = animalPool[0];
@@ -724,7 +705,6 @@
             if (input !== "") userName = input;
             
             document.getElementById('nameModal').style.display = 'none';
-            // 요구사항 1번: OOO의 이어주는 말 동물원
             document.getElementById('zooTitle').innerText = `💖 ${userName}의 이어주는 말 동물원`;
             document.getElementById('stageTitle').innerText = `🌳 ${userName} 원장님의 동물 놀이터`;
             
@@ -736,12 +716,49 @@
             const randomIndex = Math.floor(Math.random() * animalPool.length);
             selectedPet = animalPool[randomIndex];
             heartLevel = 1;
+            renderPetSvgParts();
         }
 
         function init() {
             loadQuiz();
             updateUI();
             renderZooStageAndInventory();
+        }
+
+        function renderPetSvgParts() {
+            const pet = selectedPet;
+            
+            let earSvg = '';
+            if (pet.id === 'rabbit') {
+                earSvg = `<ellipse cx="35" cy="22" rx="7" ry="18" fill="${pet.earColor}" /><ellipse cx="65" cy="22" rx="7" ry="18" fill="${pet.earColor}" />`;
+            } else if (pet.id === 'fox' || pet.id === 'cat') {
+                earSvg = `<polygon points="25,40 38,15 48,35" fill="${pet.earColor}" /><polygon points="75,40 62,15 52,35" fill="${pet.earColor}" />`;
+            } else if (pet.id === 'bear' || pet.id === 'panda') {
+                earSvg = `<circle cx="30" cy="30" r="10" fill="${pet.earColor}" /><circle cx="70" cy="30" r="10" fill="${pet.earColor}" />`;
+            } else {
+                earSvg = `<ellipse cx="28" cy="32" rx="8" ry="12" fill="${pet.earColor}" /><ellipse cx="72" cy="32" rx="8" ry="12" fill="${pet.earColor}" />`;
+            }
+
+            document.getElementById('part-ears').innerHTML = earSvg;
+            document.getElementById('part-face').innerHTML = `<circle cx="50" cy="55" r="28" fill="${pet.faceColor}" stroke="${pet.earColor}" stroke-width="2"/>`;
+            
+            if (pet.id === 'panda') {
+                document.getElementById('part-eyes').innerHTML = `<ellipse cx="40" cy="50" rx="6" ry="4" fill="#1e293b"/><ellipse cx="60" cy="50" rx="6" ry="4" fill="#1e293b"/><circle cx="40" cy="50" r="2" fill="#fff"/><circle cx="60" cy="50" r="2" fill="#fff"/>`;
+            } else {
+                document.getElementById('part-eyes').innerHTML = `<circle cx="40" cy="50" r="3.5" fill="#1e293b"/><circle cx="60" cy="50" r="3.5" fill="#1e293b"/>`;
+            }
+
+            document.getElementById('part-nose').innerHTML = `<polygon points="50,56 46,52 54,52" fill="#ff4d6d"/><path d="M 46 60 Q 50 64 54 60" fill="none" stroke="#1e293b" stroke-width="1.5"/>`;
+            document.getElementById('part-cheeks').innerHTML = `<circle cx="33" cy="57" r="4" fill="#fda4af" opacity="0.8"/><circle cx="67" cy="57" r="4" fill="#fda4af" opacity="0.8"/>`;
+            
+            if (pet.id === 'cat' || pet.id === 'fox') {
+                document.getElementById('part-whiskers').innerHTML = `<line x1="20" y1="52" x2="32" y2="54" stroke="#94a3b8" stroke-width="1.5"/><line x1="20" y1="58" x2="32" y2="57" stroke="#94a3b8" stroke-width="1.5"/><line x1="80" y1="52" x2="68" y2="54" stroke="#94a3b8" stroke-width="1.5"/><line x1="80" y1="58" x2="68" y2="57" stroke="#94a3b8" stroke-width="1.5"/>`;
+            } else {
+                document.getElementById('part-whiskers').innerHTML = `<path d="M 42 66 Q 50 70 58 66" fill="none" stroke="#f472b6" stroke-width="2"/>`;
+            }
+
+            document.getElementById('part-ribbon').innerHTML = `<path d="M 42 78 L 58 78 L 50 83 Z" fill="#ff758f"/><circle cx="50" cy="78" r="3" fill="#ff0054"/>`;
+            document.getElementById('part-crown').innerHTML = `<polygon points="38,28 42,18 50,25 58,18 62,28" fill="#facc15" stroke="#eab308" stroke-width="1"/>`;
         }
 
         function loadQuiz() {
@@ -761,10 +778,14 @@
             });
         }
 
-        // 요구사항 2번: 정답 판정 및 중간 강화 애니메이션 연출
         function checkAnswer(selected, correct, btn) {
+            if (isEnhancing) return;
+            isEnhancing = true;
+
             const btns = document.querySelectorAll('.option-btn');
             btns.forEach(b => b.disabled = true);
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('hintBtn').disabled = true;
 
             const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
             const isSuccess = (Math.random() * 100) <= successRate;
@@ -772,8 +793,7 @@
             if (selected === correct) {
                 btn.classList.add('correct');
                 
-                // 강화 애니메이션 실행
-                runEnhanceAnimation(isSuccess, () => {
+                runEnhanceOverlayAnimation(isSuccess, () => {
                     if (isSuccess) {
                         if (heartLevel < maxLevel) heartLevel++;
                         
@@ -791,57 +811,68 @@
                             }, 500);
                         }
                     }
-                    updateUI();
+                    finishAnswerProcess();
                 });
             } else {
                 btn.classList.add('wrong');
                 btns[correct].classList.add('correct');
                 
-                // 틀렸을 때는 바로 실패 애니메이션 실행
-                runEnhanceAnimation(false, () => {
-                    updateUI();
+                runEnhanceOverlayAnimation(false, () => {
+                    finishAnswerProcess();
                 });
             }
         }
 
-        // 중간 하트 강화 연출 함수
-        function runEnhanceAnimation(isSuccess, callback) {
-            const overlay = document.getElementById('enhanceOverlay');
+        function runEnhanceOverlayAnimation(isSuccess, callback) {
+            const overlay = document.getElementById('quizEnhanceOverlay');
             const icon = document.getElementById('enhanceHeartIcon');
-            const statusText = document.getElementById('enhanceStatusText');
+            const title = document.getElementById('enhanceStatusTitle');
+            const sub = document.getElementById('enhanceStatusSub');
 
-            // 초기화
-            overlay.className = "enhance-overlay active processing";
+            const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
+
+            overlay.className = "quiz-enhance-overlay active processing";
             icon.innerText = "💖";
-            statusText.innerText = "하트 강화 진행 중...";
+            title.innerText = "하트 강화 진행 중...";
+            sub.innerText = "잠시만 기다려 주세요!";
 
-            // 1초 후 성공/실패 판정 결과 연출
             setTimeout(() => {
                 if (isSuccess) {
-                    overlay.className = "enhance-overlay active success";
+                    overlay.className = "quiz-enhance-overlay active success";
                     icon.innerText = "🌟";
-                    statusText.innerText = "SUCCESS! 하트 강화 성공! 🎉";
+                    title.innerText = "SUCCESS! 강화 성공!";
+                    sub.innerText = `✨ ${successRate}% 확률을 뚫고 강화에 성공했어요!`;
                 } else {
-                    overlay.className = "enhance-overlay active fail";
+                    overlay.className = "quiz-enhance-overlay active fail";
                     icon.innerText = "💔";
-                    statusText.innerText = "FAIL! 하트 강화 실패... 🥺";
+                    title.innerText = "FAIL! 강화 실패...";
+                    sub.innerText = `🥺 ${successRate}% 확률을 못 뚫어서 실패했어요!`;
                 }
 
-                // 결과 표시 후 1.2초 뒤 오버레이 닫고 다음 상태 반영
                 setTimeout(() => {
-                    overlay.className = "enhance-overlay";
+                    overlay.className = "quiz-enhance-overlay";
                     callback();
                 }, 1200);
 
             }, 1000);
         }
 
+        function finishAnswerProcess() {
+            isEnhancing = false;
+            updateUI();
+            
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('hintBtn').disabled = false;
+        }
+
         function nextQuiz() {
+            if (isEnhancing) return;
             currentQuizIndex = Math.floor(Math.random() * quizData.length);
             loadQuiz();
         }
 
         function showHint() {
+            if (isEnhancing) return;
             const current = quizData[currentQuizIndex % quizData.length];
             alert(`💡 힌트: ${current.hint}`);
         }
@@ -882,8 +913,10 @@
 
         function setPartActive(id, active) {
             const el = document.getElementById(id);
-            if (active) el.classList.add('active');
-            else el.classList.remove('active');
+            if (el) {
+                if (active) el.classList.add('active');
+                else el.classList.remove('active');
+            }
         }
 
         function continueZoo() {
