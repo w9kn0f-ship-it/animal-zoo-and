@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이어주는 말 동물원</title>
     <style>
-        /* 동글동글하고 귀여우면서도 가독성 높은 웹폰트 불러오기 */
-        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Surround.woff');
-        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff');
+        /* 확실하게 로딩되는 동글동글 귀여운 웹 손글씨 폰트 선언 */
+        @font-face {
+            font-family: 'THE노란리본miri';
+            src: local('THE노란리본miri'), local('THE노란리본'), url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/KyoboHandwriting2020A.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/Ownglyph_anseongeun-Rg.woff2');
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cafe24Surround', 'GmarketSansMedium', sans-serif !important;
+            font-family: 'Ownglyph_anseongeun-Rg', 'THE노란리본miri', 'THE노란리본', cursive, sans-serif !important;
             user-select: none;
         }
 
@@ -63,14 +69,14 @@
         }
 
         .modal-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #ff758f;
             margin-bottom: 8px;
         }
 
         .modal-desc {
-            font-size: 15px;
+            font-size: 17px;
             color: #64748b;
             margin-bottom: 20px;
             line-height: 1.4;
@@ -81,7 +87,7 @@
             padding: 12px;
             border: 2px solid #ffb3c1;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 20px;
             text-align: center;
             outline: none;
             margin-bottom: 15px;
@@ -98,7 +104,7 @@
             border: none;
             padding: 14px;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 117, 143, 0.3);
@@ -110,14 +116,13 @@
 
         header h1 {
             color: #805ad5;
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 4px;
-            letter-spacing: -0.5px;
         }
 
         header p {
             color: #718096;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         /* 상단 완성된 동물원 무대 */
@@ -143,7 +148,7 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 6px 16px;
             border-radius: 14px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #0284c7;
         }
@@ -153,7 +158,7 @@
             color: #713f12;
             padding: 6px 16px;
             border-radius: 14px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
@@ -180,7 +185,7 @@
         }
 
         .zoo-stage-pet-name {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
             background: rgba(255, 255, 255, 0.95);
             color: #1e293b;
@@ -220,7 +225,7 @@
         .card-title {
             font-weight: bold;
             color: #7e22ce;
-            font-size: 19px;
+            font-size: 22px;
             margin-bottom: 12px;
         }
 
@@ -287,7 +292,7 @@
             color: white;
             padding: 6px 20px;
             border-radius: 20px;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(255, 0, 84, 0.3);
             display: flex;
@@ -302,13 +307,13 @@
         }
 
         .pet-name-text {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             color: #334155;
         }
 
         .pet-status-text {
-            font-size: 14px;
+            font-size: 16px;
             color: #ff4d6d;
             margin-top: 3px;
             font-weight: bold;
@@ -330,7 +335,7 @@
         }
 
         .progress-text {
-            font-size: 14px;
+            font-size: 15px;
             color: #64748b;
             text-align: right;
         }
@@ -344,17 +349,17 @@
         .quiz-header {
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             color: #ff4d6d;
             margin-bottom: 8px;
         }
 
         .quiz-question {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             color: #1e293b;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             line-height: 1.5;
             min-height: 52px;
             background: #fcf4ff;
@@ -362,6 +367,18 @@
             border-radius: 16px;
             border: 1px dashed #d8b4fe;
             letter-spacing: -0.3px;
+        }
+
+        .hint-box {
+            display: none;
+            background: #fef9c3;
+            border: 2px solid #fde047;
+            color: #854d0e;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
         .options-list {
@@ -377,7 +394,7 @@
             border-radius: 14px;
             padding: 14px 18px;
             text-align: left;
-            font-size: 17px;
+            font-size: 18px;
             color: #334155;
             cursor: pointer;
             transition: all 0.2s;
@@ -412,7 +429,7 @@
             color: #854d0e;
             padding: 10px 18px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -424,7 +441,7 @@
             font-weight: bold;
             padding: 10px 22px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(255, 77, 109, 0.25);
         }
@@ -434,7 +451,6 @@
             cursor: not-allowed;
         }
 
-        /* 오른쪽 퀴즈 창 전체를 덮는 강화 애니메이션 화면 */
         .quiz-enhance-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -449,6 +465,8 @@
             pointer-events: none;
             transition: opacity 0.25s ease;
             border-radius: 24px;
+            padding: 20px;
+            text-align: center;
         }
 
         .quiz-enhance-overlay.active {
@@ -503,8 +521,9 @@
         }
 
         .enhance-status-sub {
-            font-size: 16px;
+            font-size: 17px;
             color: #64748b;
+            line-height: 1.4;
         }
 
         .quiz-enhance-overlay.success .enhance-status-title {
@@ -513,6 +532,10 @@
 
         .quiz-enhance-overlay.fail .enhance-status-title {
             color: #991b1b;
+        }
+
+        .quiz-enhance-overlay.wrong .enhance-status-title {
+            color: #b91c1c;
         }
 
         /* 하단 인벤토리 */
@@ -540,7 +563,7 @@
         }
 
         .empty-inventory {
-            font-size: 15px;
+            font-size: 16px;
             color: #a0aec0;
             width: 100%;
             text-align: center;
@@ -557,7 +580,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 16px;
+            font-size: 17px;
         }
     </style>
 </head>
@@ -576,7 +599,7 @@
     <!-- 2. 완성 축하 모달 -->
     <div class="modal-overlay" id="completionModal" style="display: none;">
         <div class="modal-box">
-            <div class="modal-title">🎉 22강 완성 축하해요!</div>
+            <div class="modal-title">🎉 15성 완성 축하해요!</div>
             <div class="modal-desc" id="completionDesc">동물 친구가 내 인벤토리에 들어왔어요!</div>
             <button class="modal-btn" onclick="continueZoo()">이어서 또 모아볼까요? 💖</button>
         </div>
@@ -620,7 +643,7 @@
                     </div>
 
                     <div class="huge-heart-badge">
-                        <span>💖</span> <span id="heartLevelText">1강</span>
+                        <span>💖</span> <span id="heartLevelText">1성</span>
                     </div>
                 </div>
 
@@ -630,12 +653,12 @@
                 </div>
 
                 <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 4.5%;"></div>
+                    <div class="progress-bar" id="progressBar" style="width: 6.6%;"></div>
                 </div>
-                <div class="progress-text" id="progressText">1 / 22 강화 완료</div>
+                <div class="progress-text" id="progressText">1 / 15 강화 완료</div>
             </div>
 
-            <!-- 오른쪽: 퀴즈 영역 & 강화 연출 화면 -->
+            <!-- 오른쪽: 퀴즈 영역 & 강화/오답 연출 화면 -->
             <div class="card quiz-card">
                 <div class="quiz-enhance-overlay" id="quizEnhanceOverlay">
                     <div class="enhance-heart-icon" id="enhanceHeartIcon">💖</div>
@@ -649,9 +672,12 @@
                 </div>
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
+                
+                <div class="hint-box" id="hintBox"></div>
+
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
-                    <button class="btn-hint" id="hintBtn" onclick="showHint()">💡 힌트 보기</button>
+                    <button class="btn-hint" id="hintBtn" onclick="toggleHint()">💡 힌트 보기</button>
                     <button class="btn-next" id="nextBtn" onclick="nextQuiz()">다음 문제 →</button>
                 </div>
             </div>
@@ -672,7 +698,7 @@
     <script>
         let userName = "이민형";
         let heartLevel = 1;
-        const maxLevel = 22;
+        const maxLevel = 15;
         let isEnhancing = false;
         
         const animalPool = [
@@ -688,15 +714,38 @@
         let selectedPet = animalPool[0];
         let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
 
+        // '그러자' 선지를 정돈하고 정답이 명확하도록 정제한 퀴즈 목록
         const quizData = [
             { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
             { question: "밖에는 비가 와요. ( ) 우산을 썼어요.", options: ["그리고", "그래서", "그러나"], answer: 1, hint: "비가 오니까 할 일을 생각해보세요!" },
             { question: "사탕을 먹고 싶었어요. ( ) 사탕이 없었어요.", options: ["하지만", "그러니까", "왜냐하면"], answer: 0, hint: "원하는 것과 반대 상황을 이어줘요!" },
-            { question: "열심히 달렸어요. ( ) 1등을 했어요!", options: ["그러자", "그래서", "하지만"], answer: 1, hint: "열심히 노력해서 기분 좋은 결과가 나왔어요!" },
+            { question: "열심히 달렸어요. ( ) 1등을 했어요!", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "열심히 노력해서 기분 좋은 결과가 나왔어요!" },
             { question: "장난감을 가지고 놀았어요. ( ) 깨끗이 정리했어요.", options: ["그리고", "왜냐하면", "그러나"], answer: 0, hint: "놀고 나서 이어서 한 일을 순서대로 연결해요." },
             { question: "손을 깨끗이 씻었어요. ( ) 감기에 걸리지 않아요.", options: ["그러니까", "하지만", "비록"], answer: 0, hint: "좋은 습관 덕분에 생기는 이유예요!" },
             { question: "오늘 내 생일이에요. ( ) 친구들이 축하해 줬어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "기쁜 생일날 일어난 일을 이어줘요!" },
-            { question: "바람이 쌩쌩 불어요. ( ) 날씨가 무척 추워요.", options: ["게다가", "하지만", "왜냐하면"], answer: 0, hint: "추운데 바람까지 부는 상황을 더해줘요." }
+            { question: "바람이 쌩쌩 불어요. ( ) 날씨가 무척 추워요.", options: ["게다가", "하지만", "왜냐하면"], answer: 0, hint: "추운데 바람까지 부는 상황을 더해줘요." },
+            { question: "아침 일찍 일어났어요. ( ) 학교에 늦지 않았어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "일찍 일어난 덕분에 일어난 좋은 결과예요!" },
+            { question: "공부가 너무 재미있어요. ( ) 매일 책을 읽어요.", options: ["그러니까", "하지만", "아니면"], answer: 0, hint: "재미있어서 계속하게 되는 이유를 이어줘요." },
+            { question: "축구 경기를 했어요. ( ) 아쉽게 졌어요.", options: ["하지만", "그래서", "그리고"], answer: 0, hint: "열심히 했지만 반대의 결과가 나온 상황이에요." },
+            { question: "눈이 하얗게 내렸어요. ( ) 친구들과 눈사람을 만들었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "눈이 와서 한 신나는 놀이를 연결해요." },
+            { question: "어두운 밤이 되었어요. ( ) 하늘에 별이 반짝여요.", options: ["그리고", "하지만", "그러므로"], answer: 0, hint: "밤이 되어 일어난 자연스러운 모습이에요." },
+            { question: "키가 많이 컸어요. ( ) 옷이 작아졌어요.", options: ["그래서", "그러나", "아니면"], answer: 0, hint: "키가 크면서 생겨난 변화를 이어줘요." },
+            { question: "약속 시간에 늦었어요. ( ) 씽씽 달렸어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "늦어서 서두르게 된 행동을 나타내요." },
+            { question: "노래를 크게 불렀어요. ( ) 목이 아팠어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "노래를 크게 부른 뒤 나타난 결과예요." },
+            { question: "동생이 넘어졌어요. ( ) 손을 잡고 일으켜 줬어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "동생을 도와준 다정한 마음을 나타내요." },
+            { question: "달콤한 수박을 먹었어요. ( ) 기분이 참 좋았어요.", options: ["그래서", "하지만", "비록"], answer: 0, hint: "맛있는 걸 먹은 뒤 좋아진 기분을 표현해요." },
+            { question: "목이 무척 말랐어요. ( ) 시원한 물을 마셨어요.", options: ["그래서", "그러나", "아니면"], answer: 0, hint: "목이 말라서 한 알맞은 행동이에요." },
+            { question: "놀이공원에 갔어요. ( ) 정말 신나게 놀았어요.", options: ["그리고", "하지만", "왜냐하면"], answer: 0, hint: "놀이공원에서 한 일을 순서대로 이어줘요." },
+            { question: "열심히 그림을 그렸어요. ( ) 상을 받았어요!", options: ["그 결과", "하지만", "아니면"], answer: 0, hint: "정성껏 그린 그림 덕분에 일어난 일이에요." },
+            { question: "날씨가 화창해요. ( ) 산책을 하러 나갔어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "좋은 날씨에 어울리는 행동을 연결해요." },
+            { question: "어려운 퀴즈를 맞혔어요. ( ) 기쁨의 환호를 질렀어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "퀴즈를 맞혀 기쁜 마음을 나타내요." },
+            { question: "신발을 혼자 신었어요. ( ) 부모님이 칭찬해 주셨어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "스스로 해내어 칭찬받은 기쁜 상황이에요." },
+            { question: "치카치카 양치를 했어요. ( ) 이빨이 반짝반짝 깨끗해요.", options: ["그래서", "하지만", "비록"], answer: 0, hint: "양치를 열심히 한 결과를 말해요." },
+            { question: "컴퓨터 게임을 오래 했어요. ( ) 눈이 피곤해졌어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "오래 게임을 한 뒤 나타난 변화예요." },
+            { question: "비빔밥이 조금 매웠어요. ( ) 맛있게 다 먹었어요.", options: ["하지만", "그래서", "그러니까"], answer: 0, hint: "매웠지만 끝까지 맛있게 먹은 상황이에요." },
+            { question: "선생님 말씀에 귀를 기울였어요. ( ) 문제 답을 잘 알 수 있었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "집중해서 들어서 알게 된 유용한 결과예요." },
+            { question: "꽃에 물을 정성껏 주었어요. ( ) 예쁜 꽃이 활짝 피었어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "정성 어린 보살핌 뒤 피어난 예쁜 모습이에요." },
+            { question: "친구가 슬퍼하고 있었어요. ( ) 따뜻하게 안아 주었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "슬픈 친구를 위로해 주는 고마운 행동이에요." }
         ];
         let currentQuizIndex = 0;
 
@@ -765,6 +814,10 @@
             const current = quizData[currentQuizIndex % quizData.length];
             document.getElementById('quizNumber').innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
             document.getElementById('quizQuestion').innerText = current.question;
+            
+            const hintBox = document.getElementById('hintBox');
+            hintBox.style.display = 'none';
+            hintBox.innerText = `💡 힌트: ${current.hint}`;
 
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = "";
@@ -787,14 +840,29 @@
             document.getElementById('nextBtn').disabled = true;
             document.getElementById('hintBtn').disabled = true;
 
-            const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
-            const isSuccess = (Math.random() * 100) <= successRate;
+            const overlay = document.getElementById('quizEnhanceOverlay');
+            const icon = document.getElementById('enhanceHeartIcon');
+            const title = document.getElementById('enhanceStatusTitle');
+            const sub = document.getElementById('enhanceStatusSub');
 
             if (selected === correct) {
                 btn.classList.add('correct');
-                
-                runEnhanceOverlayAnimation(isSuccess, () => {
+
+                const successRate = Math.max(50, Math.round(85 - (heartLevel * 2.2)));
+                const isSuccess = (Math.random() * 100) <= successRate;
+
+                overlay.className = "quiz-enhance-overlay active processing";
+                icon.innerText = "💖";
+                title.innerText = "하트 강화 도전 중...";
+                sub.innerText = "잠시만 기다려 주세요!";
+
+                setTimeout(() => {
                     if (isSuccess) {
+                        overlay.className = "quiz-enhance-overlay active success";
+                        icon.innerText = "🌟";
+                        title.innerText = "SUCCESS! 강화 성공!";
+                        sub.innerText = `✨ 정답! ${successRate}% 확률을 뚫고 강화에 성공했어요!`;
+
                         if (heartLevel < maxLevel) heartLevel++;
                         
                         if (heartLevel === maxLevel) {
@@ -806,55 +874,38 @@
                             renderZooStageAndInventory();
                             
                             setTimeout(() => {
-                                document.getElementById('completionDesc').innerText = `🎉 축하합니다! ${selectedPet.name} 친구가 22강 하트를 완성하여 ${userName} 원장님의 인벤토리에 보관되었어요!`;
+                                document.getElementById('completionDesc').innerText = `🎉 축하합니다! ${selectedPet.name} 친구가 15성 하트를 완성하여 ${userName} 원장님의 인벤토리에 보관되었어요!`;
                                 document.getElementById('completionModal').style.display = 'flex';
                             }, 500);
                         }
+                    } else {
+                        overlay.className = "quiz-enhance-overlay active fail";
+                        icon.innerText = "💔";
+                        title.innerText = "FAIL! 강화 실패...";
+                        sub.innerText = `🥺 정답이지만 ${successRate}% 확률을 못 뚫어서 실패했어요!`;
                     }
-                    finishAnswerProcess();
-                });
+
+                    setTimeout(() => {
+                        overlay.className = "quiz-enhance-overlay";
+                        finishAnswerProcess();
+                    }, 1400);
+
+                }, 1000);
+
             } else {
                 btn.classList.add('wrong');
                 btns[correct].classList.add('correct');
-                
-                runEnhanceOverlayAnimation(false, () => {
-                    finishAnswerProcess();
-                });
-            }
-        }
 
-        function runEnhanceOverlayAnimation(isSuccess, callback) {
-            const overlay = document.getElementById('quizEnhanceOverlay');
-            const icon = document.getElementById('enhanceHeartIcon');
-            const title = document.getElementById('enhanceStatusTitle');
-            const sub = document.getElementById('enhanceStatusSub');
-
-            const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
-
-            overlay.className = "quiz-enhance-overlay active processing";
-            icon.innerText = "💖";
-            title.innerText = "하트 강화 진행 중...";
-            sub.innerText = "잠시만 기다려 주세요!";
-
-            setTimeout(() => {
-                if (isSuccess) {
-                    overlay.className = "quiz-enhance-overlay active success";
-                    icon.innerText = "🌟";
-                    title.innerText = "SUCCESS! 강화 성공!";
-                    sub.innerText = `✨ ${successRate}% 확률을 뚫고 강화에 성공했어요!`;
-                } else {
-                    overlay.className = "quiz-enhance-overlay active fail";
-                    icon.innerText = "💔";
-                    title.innerText = "FAIL! 강화 실패...";
-                    sub.innerText = `🥺 ${successRate}% 확률을 못 뚫어서 실패했어요!`;
-                }
+                overlay.className = "quiz-enhance-overlay active wrong";
+                icon.innerText = "💦";
+                title.innerText = "틀렸어요!";
+                sub.innerText = "다음 문제는 더 꼼꼼히 풀어봐요!";
 
                 setTimeout(() => {
                     overlay.className = "quiz-enhance-overlay";
-                    callback();
-                }, 1200);
-
-            }, 1000);
+                    finishAnswerProcess();
+                }, 1400);
+            }
         }
 
         function finishAnswerProcess() {
@@ -863,6 +914,9 @@
             
             document.getElementById('nextBtn').disabled = false;
             document.getElementById('hintBtn').disabled = false;
+            
+            currentQuizIndex = Math.floor(Math.random() * quizData.length);
+            loadQuiz();
         }
 
         function nextQuiz() {
@@ -871,18 +925,22 @@
             loadQuiz();
         }
 
-        function showHint() {
+        function toggleHint() {
             if (isEnhancing) return;
-            const current = quizData[currentQuizIndex % quizData.length];
-            alert(`💡 힌트: ${current.hint}`);
+            const hintBox = document.getElementById('hintBox');
+            if (hintBox.style.display === 'none' || hintBox.style.display === '') {
+                hintBox.style.display = 'block';
+            } else {
+                hintBox.style.display = 'none';
+            }
         }
 
         function updateUI() {
             document.getElementById('petName').innerText = selectedPet.name;
-            document.getElementById('heartLevelText').innerText = `${heartLevel}강`;
+            document.getElementById('heartLevelText').innerText = `${heartLevel}성`;
             document.getElementById('scoreCount').innerText = `강화 하트 ❤️ ${heartLevel}개`;
 
-            const successRate = Math.max(50, Math.round(85 - (heartLevel * 1.5)));
+            const successRate = Math.max(50, Math.round(85 - (heartLevel * 2.2)));
             document.getElementById('petStatus').innerText = `🌱 성공 확률: ${successRate}% 하트 강화 도전!`;
 
             const percent = (heartLevel / maxLevel) * 100;
@@ -901,14 +959,14 @@
                 bgContainer.appendChild(heart);
             }
 
-            setPartActive('part-ears', heartLevel >= 3);
-            setPartActive('part-face', heartLevel >= 6);
-            setPartActive('part-eyes', heartLevel >= 9);
-            setPartActive('part-nose', heartLevel >= 12);
-            setPartActive('part-cheeks', heartLevel >= 15);
-            setPartActive('part-whiskers', heartLevel >= 18);
-            setPartActive('part-ribbon', heartLevel >= 21);
-            setPartActive('part-crown', heartLevel >= 22);
+            setPartActive('part-ears', heartLevel >= 2);
+            setPartActive('part-face', heartLevel >= 4);
+            setPartActive('part-eyes', heartLevel >= 6);
+            setPartActive('part-nose', heartLevel >= 8);
+            setPartActive('part-cheeks', heartLevel >= 10);
+            setPartActive('part-whiskers', heartLevel >= 12);
+            setPartActive('part-ribbon', heartLevel >= 14);
+            setPartActive('part-crown', heartLevel >= 15);
         }
 
         function setPartActive(id, active) {
@@ -922,7 +980,7 @@
         function continueZoo() {
             document.getElementById('completionModal').style.display = 'none';
             pickRandomPet();
-            nextQuiz();
+            loadQuiz();
             updateUI();
         }
 
