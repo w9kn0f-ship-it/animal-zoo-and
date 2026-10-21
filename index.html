@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이어주는 말 동물원</title>
     <style>
-        /* 확실하게 로딩되는 동글동글 귀여운 웹 손글씨 폰트 선언 */
+        /* 확실하고 이쁜 동글동글 귀여운 손글씨 웹폰트 */
         @font-face {
-            font-family: 'THE노란리본miri';
-            src: local('THE노란리본miri'), local('THE노란리본'), url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/KyoboHandwriting2020A.woff') format('woff');
+            font-family: 'KyoboHandwriting2020A';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/KyoboHandwriting2020A.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
-
-        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2212@1.0/Ownglyph_anseongeun-Rg.woff2');
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Ownglyph_anseongeun-Rg', 'THE노란리본miri', 'THE노란리본', cursive, sans-serif !important;
+            font-family: 'KyoboHandwriting2020A', cursive, sans-serif !important;
             user-select: none;
         }
 
@@ -319,25 +317,39 @@
             font-weight: bold;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            background: #f1f5f9;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
+        /* 5-5-5 컬러 하트 게이지바 영역 */
+        .heart-gauge-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: #fff5f7;
+            padding: 10px;
+            border-radius: 14px;
+            border: 1px solid #ffd1dc;
             margin-bottom: 6px;
         }
 
-        .progress-bar {
-            background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
-            height: 100%;
-            transition: width 0.3s ease;
+        .heart-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .gauge-heart {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .gauge-heart.filled {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            transform: scale(1.1);
         }
 
         .progress-text {
             font-size: 15px;
             color: #64748b;
             text-align: right;
+            font-weight: bold;
         }
 
         /* 오른쪽 퀴즈 영역 및 전체 차단 오버레이 */
@@ -652,10 +664,9 @@
                     <div class="pet-status-text" id="petStatus">🌱 성공 확률: 85% 하트 강화 도전!</div>
                 </div>
 
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBar" style="width: 6.6%;"></div>
-                </div>
-                <div class="progress-text" id="progressText">1 / 15 강화 완료</div>
+                <!-- 5-5-5 컬러 하트 게이지바 -->
+                <div class="heart-gauge-container" id="heartGaugeContainer"></div>
+                <div class="progress-text" id="progressText">1 / 15성 달성</div>
             </div>
 
             <!-- 오른쪽: 퀴즈 영역 & 강화/오답 연출 화면 -->
@@ -714,7 +725,6 @@
         let selectedPet = animalPool[0];
         let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
 
-        // '그러자' 선지를 정돈하고 정답이 명확하도록 정제한 퀴즈 목록
         const quizData = [
             { question: "배가 너무 고파요. ( ) 빵을 먹었어요.", options: ["그래서", "하지만", "왜냐하면"], answer: 0, hint: "배가 고파서 한 행동을 이어주는 말이에요!" },
             { question: "밖에는 비가 와요. ( ) 우산을 썼어요.", options: ["그리고", "그래서", "그러나"], answer: 1, hint: "비가 오니까 할 일을 생각해보세요!" },
@@ -741,7 +751,7 @@
             { question: "어려운 퀴즈를 맞혔어요. ( ) 기쁨의 환호를 질렀어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "퀴즈를 맞혀 기쁜 마음을 나타내요." },
             { question: "신발을 혼자 신었어요. ( ) 부모님이 칭찬해 주셨어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "스스로 해내어 칭찬받은 기쁜 상황이에요." },
             { question: "치카치카 양치를 했어요. ( ) 이빨이 반짝반짝 깨끗해요.", options: ["그래서", "하지만", "비록"], answer: 0, hint: "양치를 열심히 한 결과를 말해요." },
-            { question: "컴퓨터 게임을 오래 했어요. ( ) 눈이 피곤해졌어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "오래 게임을 한 뒤 나타난 변화예요." },
+            { question: "컴퓨터 게임을 오래 했어요. ( ) 눈이 피곤해졌어요.", options: ["그러자", "하지만", "아니면"], answer: 0, hint: "오래 게임을 한 뒤 나타난 변화예요." },
             { question: "비빔밥이 조금 매웠어요. ( ) 맛있게 다 먹었어요.", options: ["하지만", "그래서", "그러니까"], answer: 0, hint: "매웠지만 끝까지 맛있게 먹은 상황이에요." },
             { question: "선생님 말씀에 귀를 기울였어요. ( ) 문제 답을 잘 알 수 있었어요.", options: ["그래서", "그러나", "왜냐하면"], answer: 0, hint: "집중해서 들어서 알게 된 유용한 결과예요." },
             { question: "꽃에 물을 정성껏 주었어요. ( ) 예쁜 꽃이 활짝 피었어요.", options: ["그래서", "하지만", "아니면"], answer: 0, hint: "정성 어린 보살핌 뒤 피어난 예쁜 모습이에요." },
@@ -943,9 +953,40 @@
             const successRate = Math.max(50, Math.round(85 - (heartLevel * 2.2)));
             document.getElementById('petStatus').innerText = `🌱 성공 확률: ${successRate}% 하트 강화 도전!`;
 
-            const percent = (heartLevel / maxLevel) * 100;
-            document.getElementById('progressBar').style.width = `${percent}%`;
-            document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel} 강화 완료`;
+            document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel}성 달성`;
+
+            // 5-5-5 컬러 하트 게이지바 렌더링 (다양한 알록달록 색상 적용)
+            const gaugeContainer = document.getElementById('heartGaugeContainer');
+            gaugeContainer.innerHTML = "";
+            
+            // 5개씩 3줄 (총 15성)
+            const heartColors = [
+                '#ff4d6d', '#ff758f', '#fb7185', '#f43f5e', '#e11d48', // 1~5성 (핑크레드톤)
+                '#a855f7', '#9333ea', '#7e22ce', '#6b21a8', '#581c87', // 6~10성 (퍼플톤)
+                '#3b82f6', '#2563eb', '#1d4ed8', '#0284c7', '#0ea5e9'  // 11~15성 (블루하늘톤)
+            ];
+
+            for (let row = 0; row < 3; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'heart-row';
+                
+                for (let col = 0; col < 5; col++) {
+                    const currentIdx = row * 5 + col + 1;
+                    const heartSpan = document.createElement('span');
+                    heartSpan.className = 'gauge-heart';
+                    
+                    if (currentIdx <= heartLevel) {
+                        heartSpan.classList.add('filled');
+                        heartSpan.innerText = '💖';
+                        heartSpan.style.color = heartColors[currentIdx - 1];
+                    } else {
+                        heartSpan.innerText = '🤍'; // 빈 하트
+                        heartSpan.style.opacity = '0.4';
+                    }
+                    rowDiv.appendChild(heartSpan);
+                }
+                gaugeContainer.appendChild(rowDiv);
+            }
 
             const bgContainer = document.getElementById('bgHeartContainer');
             bgContainer.innerHTML = "";
