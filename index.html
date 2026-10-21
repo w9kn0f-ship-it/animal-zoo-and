@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>몽글몽글 이어말 동물원</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2107@1.1/Pretendard-Regular.woff');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            background-color: #f7f3fd;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        header h1 {
+            color: #6b46c1;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 배너 */
+        .banner {
+            background: linear-gradient(135deg, #e6fffa 0%, #ebf8ff 100%);
+            border: 2px solid #b2f5ea;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .banner-title {
+            color: #2b6cb0;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .banner-sub {
+            color: #4a5568;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .banner-reward {
+            display: inline-block;
+            background: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #d69e2e;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* 레이아웃 그리드 */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.08);
+            border: 2px solid #ede9fe;
+        }
+
+        .card-title {
+            font-weight: bold;
+            color: #553c9a;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* 펫 카드 영역 */
+        .pet-display {
+            text-align: center;
+            background: #faf8ff;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px dashed #d8b4fe;
+            margin-bottom: 12px;
+        }
+
+        .pet-avatar {
+            font-size: 50px;
+            margin-bottom: 5px;
+        }
+
+        .pet-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #4a5568;
+        }
+
+        .pet-status {
+            font-size: 12px;
+            color: #805ad5;
+            margin-bottom: 8px;
+        }
+
+        .star-rating {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #ecc94b;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background: #edf2f7;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            background: #9f7aea;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 15px;
+        }
+
+        .pet-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .pet-btn {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 18px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pet-btn.active {
+            background: #ede9fe;
+            border-color: #805ad5;
+            transform: scale(1.1);
+        }
+
+        .selector-tip {
+            font-size: 11px;
+            color: #a0aec0;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* 퀴즈 카드 영역 */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+            color: #b7791f;
+            margin-bottom: 12px;
+        }
+
+        .quiz-question {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            min-height: 50px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 14px;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .option-btn.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+            color: #22543d;
+        }
+
+        .option-btn.wrong {
+            background: #fed7d7;
+            border-color: #e53e3e;
+            color: #742a2a;
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-hint {
+            background: #fefcbf;
+            border: 1px solid #ecc94b;
+            color: #744210;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-next {
+            background: #d6bcfa;
+            border: none;
+            color: #44337a;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .btn-next:hover {
+            background: #b794f4;
+        }
+
+        /* 인벤토리 카드 */
+        .inventory-card {
+            margin-bottom: 20px;
+        }
+
+        .inventory-desc {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 12px;
+        }
+
+        .inventory-content {
+            background: #faf8ff;
+            border: 1px dashed #d8b4fe;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-inventory {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 영역 -->
+        <header>
+            <h1>몽글몽글 이어말 동물원</h1>
+            <p>이어 주는 말을 찾아 동물 친구를 별 22개까지 키워 주세요!</p>
+        </header>
+
+        <!-- 공지 배너 -->
+        <section class="banner">
+            <div class="banner-title">🌷 오늘의 동물 친구를 만나 봐요 🌷</div>
+            <div class="banner-sub">문장과 문장을 알맞게 이어 주면 별이 반짝!</div>
+            <div class="banner-reward">정답 1개 = 별 1개 ⭐</div>
+        </section>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="main-grid">
+            <!-- 왼쪽: 내가 키우는 친구 -->
+            <div class="card pet-card">
+                <div class="card-title">🌈 내가 키우는 친구</div>
+                <div class="pet-display">
+                    <div class="pet-avatar" id="petAvatar">🐰</div>
+                    <div class="pet-name" id="petName">토리 토끼</div>
+                    <div class="pet-status" id="petStatus">🌱 아직 작은 새싹이에요!</div>
+                    <div class="star-rating" id="starRating"></div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 / 22 별</div>
+                
+                <!-- 동물 선택 탭 -->
+                <div class="pet-selector" id="petSelector">
+                    <button class="pet-btn active" data-id="rabbit" data-name="토리 토끼" data-emoji="🐰">🐰</button>
+                    <button class="pet-btn" data-id="fox" data-name="포포 여우" data-emoji="🦊">🦊</button>
+                    <button class="pet-btn" data-id="cat" data-name="나비 고양이" data-emoji="🐱">🐱</button>
+                    <button class="pet-btn" data-id="panda" data-name="판다 판다" data-emoji="🐼">🐼</button>
+                    <button class="pet-btn" data-id="penguin" data-name="핑구 펭귄" data-emoji="🐧">🐧</button>
+                </div>
+                <p class="selector-tip">동물을 바꾸어 가며 퀴즈를 풀 수 있어요. 별 22개를 모으면 인벤토리에 등록돼요!</p>
+            </div>
+
+            <!-- 오른쪽: 퀴즈 영역 -->
+            <div class="card quiz-card">
+                <div class="quiz-header">
+                    <span id="quizNumber">퀴즈 1</span>
+                    <span id="scoreCount">정답 0개</span>
+                </div>
+                <div class="quiz-question" id="quizQuestion">
+                    길이 미끄러워요. ( ) 천천히 걸으세요.
+                </div>
+                <div class="options-list" id="optionsList"></div>
+                <div class="quiz-footer">
+                    <button class="btn-hint" id="hintBtn">💡 힌트</button>
+                    <button class="btn-next" id="nextBtn">다음 문제 →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단: 인벤토리 영역 -->
+        <section class="card inventory-card">
+            <div class="card-title">🛍️ 나의 동물 인벤토리</div>
+            <p class="inventory-desc">별 22개를 모은 동물은 여기에 영원히 모아 둘 수 있어요. 이 브라우저에 자동 저장됩니다.</p>
+            <div class="inventory-content" id="inventoryContent">
+                <div class="empty-inventory">아직 완성한 친구가 없어요. 동물에게 별 22개를 선물해 보세요! 🐾</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 퀴즈 데이터 리스트
+        const quizData = [
+            { question: "길이 미끄러워요. ( ) 천천히 걸으세요.", options: ["하지만", "그러나", "그리고", "그러니까", "왜냐하면"], answer: 3 },
+            { question: "배가 고팠습니다. ( ) 냉장고를 열었습니다.", options: ["그래서", "하지만", "비록", "혹시", "그러나"], answer: 0 },
+            { question: "비가 내립니다. ( ) 우산을 챙기세요.", options: ["그러므로", "그러나", "반면에", "왜냐하면", "그래도"], answer: 0 },
+            { question: "열심히 공부했다. ( ) 시험에 합격했다.", options: ["그러나", "그 결과", "반면에", "하지만", "또는"], answer: 1 }
+        ];
+
+        let currentQuizIndex = 0;
+        let stars = 0;
+        const maxStars = 22;
+        let selectedPet = { id: 'rabbit', name: '토리 토끼', emoji: '🐰' };
+        let inventory = JSON.parse(localStorage.getItem('animalInventory')) || [];
+
+        // DOM 요소
+        const petAvatar = document.getElementById('petAvatar');
+        const petName = document.getElementById('petName');
+        const starRating = document.getElementById('starRating');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const quizNumber = document.getElementById('quizNumber');
+        const scoreCount = document.getElementById('scoreCount');
+        const quizQuestion = document.getElementById('quizQuestion');
+        const optionsList = document.getElementById('optionsList');
+        const nextBtn = document.getElementById('nextBtn');
+        const hintBtn = document.getElementById('hintBtn');
+        const inventoryContent = document.getElementById('inventoryContent');
+
+        function init() {
+            loadQuiz();
+            updatePetUI();
+            renderInventory();
+        }
+
+        function loadQuiz() {
+            const current = quizData[currentQuizIndex % quizData.length];
+            quizNumber.innerText = `퀴즈 ${(currentQuizIndex % quizData.length) + 1}`;
+            quizQuestion.innerText = current.question;
+            optionsList.innerHTML = "";
+
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.classList.add('option-btn');
+                btn.innerText = `${idx + 1}. ${opt}`;
+                btn.onclick = () => checkAnswer(idx, current.answer, btn);
+                optionsList.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, btnElement) {
+            const buttons = optionsList.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btnElement.classList.add('correct');
+                if (stars < maxStars) {
+                    stars++;
+                    updatePetUI();
+                }
+                scoreCount.innerText = `정답 ${stars}개`;
+                
+                if (stars === maxStars && !inventory.includes(selectedPet.name)) {
+                    inventory.push(selectedPet.name);
+                    localStorage.setItem('animalInventory', JSON.stringify(inventory));
+                    renderInventory();
+                    alert(`🎉 축하합니다! ${selectedPet.name} 친구가 별 22개를 모아 인벤토리에 등록되었습니다!`);
+                }
+            } else {
+                btnElement.classList.add('wrong');
+                buttons[correct].classList.add('correct');
+            }
+        }
+
+        nextBtn.onclick = () => {
+            currentQuizIndex++;
+            loadQuiz();
+        };
+
+        hintBtn.onclick = () => {
+            alert("💡 힌트: 앞 문장의 원인이나 이유가 될 수 있는 이어 주는 말을 골라보세요!");
+        };
+
+        function updatePetUI() {
+            petAvatar.innerText = selectedPet.emoji;
+            petName.innerText = selectedPet.name;
+            
+            let starsString = "";
+            for (let i = 0; i < maxStars; i++) {
+                starsString += (i < stars) ? "⭐" : "☆";
+            }
+            starRating.innerText = starsString;
+
+            let percent = (stars / maxStars) * 100;
+            progressBar.style.width = `${percent}%`;
+            progressText.innerText = `${stars} / ${maxStars} 별`;
+        }
+
+        document.querySelectorAll('.pet-btn').forEach(button => {
+            button.onclick = () => {
+                document.querySelectorAll('.pet-btn').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                selectedPet = {
+                    id: button.getAttribute('data-id'),
+                    name: button.getAttribute('data-name'),
+                    emoji: button.getAttribute('data-emoji')
+                };
+                stars = 0;
+                scoreCount.innerText = `정답 ${stars}개`;
+                updatePetUI();
+            };
+        });
+
+        function renderInventory() {
+            if (inventory.length === 0) {
+                inventoryContent.innerHTML = `<div class="empty-inventory">아직 완성한 친구가 없어요. 동물에게 별 22개를 선물해 보세요! 🐾</div>`;
+            } else {
+                inventoryContent.innerHTML = "";
+                inventory.forEach(pet => {
+                    const badge = document.createElement('div');
+                    badge.style.cssText = "background: #fff; border: 1px solid #d8b4fe; padding: 8px 14px; border-radius: 12px; font-weight: bold; color: #6b46c1; display: inline-block; margin: 4px;";
+                    badge.innerText = `🏆 ${pet} 완료!`;
+                    inventoryContent.appendChild(badge);
+                });
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
