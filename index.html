@@ -359,11 +359,36 @@
         .quiz-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             font-size: 15px;
             font-weight: bold;
             color: #ff4d6d;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
+
+        /* 새로 추가된 문제 누적 현황 현황판 */
+        .quiz-stats-bar {
+            display: flex;
+            gap: 8px;
+            background: #fdf4ff;
+            padding: 8px 12px;
+            border-radius: 14px;
+            border: 1px solid #e9d5ff;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            justify-content: space-around;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-total { color: #64748b; }
+        .stat-correct { color: #16a34a; }
+        .stat-wrong { color: #dc2626; }
 
         .quiz-question {
             font-size: 20px;
@@ -685,6 +710,13 @@
                     <span id="scoreCount">강화 하트 ❤️ 1개</span>
                 </div>
 
+                <!-- 새로 추가된 푼 문제/맞은 문제/틀린 문제 현황판 -->
+                <div class="quiz-stats-bar">
+                    <div class="stat-item stat-total">📝 총 푼 문제: <span id="totalSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-correct">⭕ 맞은 문제: <span id="correctSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-wrong">❌ 틀린 문제: <span id="wrongSolvedCount">0</span>개</div>
+                </div>
+
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 
                 <div class="hint-box" id="hintBox"></div>
@@ -716,6 +748,11 @@
         const maxLevel = 15;
         let isEnhancing = false;
         let hasAnsweredCurrent = false;
+
+        // 새로고침하면 자동으로 초기화되는 누적 문제 통계 변수들
+        let totalSolvedCount = 0;
+        let correctSolvedCount = 0;
+        let wrongSolvedCount = 0;
         
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
@@ -728,7 +765,7 @@
         ];
         
         let selectedPet = animalPool[0];
-        let inventory = []; // 모은 동물 객체 또는 이름을 관리하는 메모리 배열
+        let inventory = [];
 
         // 100문항 완벽 검수 세트 (선지: 그래서, 그러나, 그리고)
         const quizData = [
@@ -851,12 +888,10 @@
         }
 
         function pickRandomPet() {
-            // 이미 인벤토리에 들어간 동물(id 기준)은 제외하고 남은 동물만 필터링
             const collectedIds = inventory.map(pet => pet.id);
             const remainingPets = animalPool.filter(pet => !collectedIds.includes(pet.id));
 
             if (remainingPets.length === 0) {
-                // 모든 동물 친구를 다 모았을 때 처리
                 document.getElementById('completionTitle').innerText = "🏆 동물원 대단원 완성!";
                 document.getElementById('completionDesc').innerText = `대단해요! ${userName} 원장님이 모든 동물 친구들을 빠짐없이 다 모았어요! 축하합니다! 🎉`;
                 document.getElementById('completionBtn').innerText = "처음부터 다시 시작하기 🐾";
@@ -864,7 +899,6 @@
                 return;
             }
 
-            // 남은 동물들 중에서 랜덤으로 하나 선택
             const randomIndex = Math.floor(Math.random() * remainingPets.length);
             selectedPet = remainingPets[randomIndex];
             heartLevel = 1;
@@ -943,6 +977,15 @@
             hasAnsweredCurrent = true;
             isEnhancing = true;
 
+            // 통계 수치 업데이트
+            totalSolvedCount++;
+            if (selected === correct) {
+                correctSolvedCount++;
+            } else {
+                wrongSolvedCount++;
+            }
+            updateStatsUI();
+
             document.getElementById('warningBox').style.display = 'none';
 
             const btns = document.querySelectorAll('.option-btn');
@@ -976,7 +1019,6 @@
                         if (heartLevel < maxLevel) heartLevel++;
                         
                         if (heartLevel === maxLevel) {
-                            // 인벤토리에 이미 존재하지 않는 경우에만 추가
                             if (!inventory.some(p => p.id === selectedPet.id)) {
                                 inventory.push(selectedPet);
                             }
@@ -1017,6 +1059,12 @@
                     finishAnswerProcess();
                 }, 1400);
             }
+        }
+
+        function updateStatsUI() {
+            document.getElementById('totalSolvedCount').innerText = totalSolvedCount;
+            document.getElementById('correctSolvedCount').innerText = correctSolvedCount;
+            document.getElementById('wrongSolvedCount').innerText = wrongSolvedCount;
         }
 
         function finishAnswerProcess() {
@@ -1127,7 +1175,6 @@
         function continueZoo() {
             document.getElementById('completionModal').style.display = 'none';
             
-            // 모든 동물을 다 모았을 때 모달 버튼을 누르면 인벤토리 초기화 후 재시작
             const collectedIds = inventory.map(pet => pet.id);
             const remainingPets = animalPool.filter(pet => !collectedIds.includes(pet.id));
             if (remainingPets.length === 0) {
