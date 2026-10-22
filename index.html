@@ -363,21 +363,21 @@
             font-size: 15px;
             font-weight: bold;
             color: #ff4d6d;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        /* 새로 추가된 문제 누적 현황 현황판 */
+        /* 문제 푼 결과 & 강화 성공/실패 횟수 통계판 */
         .quiz-stats-bar {
-            display: flex;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
             background: #fdf4ff;
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 14px;
             border: 1px solid #e9d5ff;
             margin-bottom: 12px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            justify-content: space-around;
         }
 
         .stat-item {
@@ -386,9 +386,10 @@
             gap: 4px;
         }
 
-        .stat-total { color: #64748b; }
         .stat-correct { color: #16a34a; }
         .stat-wrong { color: #dc2626; }
+        .stat-enhance-success { color: #0284c7; }
+        .stat-enhance-fail { color: #d97706; }
 
         .quiz-question {
             font-size: 20px;
@@ -689,7 +690,7 @@
 
                 <div class="pet-info">
                     <div class="pet-name-text" id="petName">포포 여우</div>
-                    <div class="pet-status-text" id="petStatus">🌱 성공 확률: 85% 하트 강화 도전!</div>
+                    <div class="pet-status-text" id="petStatus">🌱 성공 확률: 95% 하트 강화 도전!</div>
                 </div>
 
                 <!-- 5-5-5 컬러 하트 게이지바 -->
@@ -710,11 +711,12 @@
                     <span id="scoreCount">강화 하트 ❤️ 1개</span>
                 </div>
 
-                <!-- 새로 추가된 푼 문제/맞은 문제/틀린 문제 현황판 -->
+                <!-- 퀴즈 맞은/틀린 수 + 강화 성공/실패 횟수 통계판 -->
                 <div class="quiz-stats-bar">
-                    <div class="stat-item stat-total">📝 총 푼 문제: <span id="totalSolvedCount">0</span>개</div>
-                    <div class="stat-item stat-correct">⭕ 맞은 문제: <span id="correctSolvedCount">0</span>개</div>
-                    <div class="stat-item stat-wrong">❌ 틀린 문제: <span id="wrongSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-correct">⭕ 맞음: <span id="correctSolvedCount">0</span></div>
+                    <div class="stat-item stat-wrong">❌ 틀림: <span id="wrongSolvedCount">0</span></div>
+                    <div class="stat-item stat-enhance-success">✨ 강화성공: <span id="enhanceSuccessCount">0</span></div>
+                    <div class="stat-item stat-enhance-fail">💦 강화실패: <span id="enhanceFailCount">0</span></div>
                 </div>
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
@@ -749,11 +751,13 @@
         let isEnhancing = false;
         let hasAnsweredCurrent = false;
 
-        // 새로고침하면 자동으로 초기화되는 누적 문제 통계 변수들
-        let totalSolvedCount = 0;
+        // 통계 카운터 변수들 (새로고침하면 초기화)
         let correctSolvedCount = 0;
         let wrongSolvedCount = 0;
+        let enhanceSuccessCount = 0;
+        let enhanceFailCount = 0;
         
+        // 동물 친구 종류 대폭 확장 (총 14마리)
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
             { id: 'fox', name: '포포 여우', emoji: '🦊', earColor: '#f97316', faceColor: '#ffedd5' },
@@ -761,7 +765,14 @@
             { id: 'panda', name: '판다 판다', emoji: '🐼', earColor: '#1e293b', faceColor: '#ffffff' },
             { id: 'penguin', name: '핑구 펭귄', emoji: '🐧', earColor: '#38bdf8', faceColor: '#e0f2fe' },
             { id: 'bear', name: '베어 곰', emoji: '🐻', earColor: '#a16207', faceColor: '#fef3c7' },
-            { id: 'chick', name: '삐약 병아리', emoji: '🐥', earColor: '#facc15', faceColor: '#fef08a' }
+            { id: 'chick', name: '삐약 병아리', emoji: '🐥', earColor: '#facc15', faceColor: '#fef08a' },
+            { id: 'puppy', name: '코코 강아지', emoji: '🐶', earColor: '#d97706', faceColor: '#fef3c7' },
+            { id: 'hamster', name: '햄찌 햄스터', emoji: '🐹', earColor: '#f43f5e', faceColor: '#ffe4e6' },
+            { id: 'koala', name: '몽실 코알라', emoji: '🐨', earColor: '#64748b', faceColor: '#f1f5f9' },
+            { id: 'tiger', name: '호랑 호랑이', emoji: '🐯', earColor: '#ea580c', faceColor: '#ffedd5' },
+            { id: 'lion', name: '라이언 사자', emoji: '🦁', earColor: '#ca8a04', faceColor: '#fef9c3' },
+            { id: 'unicorn', name: '루루 유니콘', emoji: '🦄', earColor: '#c084fc', faceColor: '#f3e8ff' },
+            { id: 'frog', name: '개구 개구리', emoji: '🐸', earColor: '#16a34a', faceColor: '#dcfce7' }
         ];
         
         let selectedPet = animalPool[0];
@@ -798,7 +809,7 @@
             { question: "동화책 줄거리가 너무 재미있었어요. ( ) 처음부터 다시 읽었어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "재미있어서 다시 읽은 결과예요." },
             { question: "햇볕이 강하게 내리쬐는 더운 날이에요. ( ) 시원한 아이스크림을 사 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "더운 날씨 때문에 아이스크림을 찾았어요." },
             { question: "컴퓨터 화면을 오래 보았어요. ( ) 눈이 시리고 빡빡해졌어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "오래 보아서 눈이 피곤해진 결과입니다." },
-            { question: "선생님 설명에 집중했어요. ( ) 시험 문제를 쉽게 풀어냈어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "집중한 덕분에 잘 풀게 되었어요." },
+            { question: "선생님 설명에 집중했어요. ( ) 시험 문제를 쉽게 풀어냈어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "집중한 덕분에 잘 풀어냈어요." },
             { question: "귀여운 강아지가 꼬리를 쳤어요. ( ) 기분이 매우 좋아졌어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "강아지의 모습 덕분에 기분이 좋아졌어요." },
             { question: "바깥에 컴컴한 밤이 되었어요. ( ) 졸음이 몰려왔어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "밤이 되어 졸리게 된 결과예요." },
             { question: "비빔밥 양념을 너무 많이 넣었어요. ( ) 입안이 얼얼하게 매웠어요.", options: ["그래서", "그러나", "그리고"], answer: 0, hint: "양념을 많이 넣어서 매워진 상황입니다." },
@@ -893,7 +904,7 @@
 
             if (remainingPets.length === 0) {
                 document.getElementById('completionTitle').innerText = "🏆 동물원 대단원 완성!";
-                document.getElementById('completionDesc').innerText = `대단해요! ${userName} 원장님이 모든 동물 친구들을 빠짐없이 다 모았어요! 축하합니다! 🎉`;
+                document.getElementById('completionDesc').innerText = `대단해요! ${userName} 원장님이 14마리의 모든 동물 친구들을 빠짐없이 다 모았어요! 축하합니다! 🎉`;
                 document.getElementById('completionBtn').innerText = "처음부터 다시 시작하기 🐾";
                 document.getElementById('completionModal').style.display = 'flex';
                 return;
@@ -915,12 +926,14 @@
             const pet = selectedPet;
             
             let earSvg = '';
-            if (pet.id === 'rabbit') {
+            if (pet.id === 'rabbit' || pet.id === 'hamster') {
                 earSvg = `<ellipse cx="35" cy="22" rx="7" ry="18" fill="${pet.earColor}" /><ellipse cx="65" cy="22" rx="7" ry="18" fill="${pet.earColor}" />`;
-            } else if (pet.id === 'fox' || pet.id === 'cat') {
+            } else if (pet.id === 'fox' || pet.id === 'cat' || pet.id === 'tiger') {
                 earSvg = `<polygon points="25,40 38,15 48,35" fill="${pet.earColor}" /><polygon points="75,40 62,15 52,35" fill="${pet.earColor}" />`;
-            } else if (pet.id === 'bear' || pet.id === 'panda') {
+            } else if (pet.id === 'bear' || pet.id === 'panda' || pet.id === 'koala' || pet.id === 'lion') {
                 earSvg = `<circle cx="30" cy="30" r="10" fill="${pet.earColor}" /><circle cx="70" cy="30" r="10" fill="${pet.earColor}" />`;
+            } else if (pet.id === 'unicorn') {
+                earSvg = `<polygon points="50,5 45,30 55,30" fill="#facc15"/><circle cx="30" cy="30" r="8" fill="${pet.earColor}" /><circle cx="70" cy="30" r="8" fill="${pet.earColor}" />`;
             } else {
                 earSvg = `<ellipse cx="28" cy="32" rx="8" ry="12" fill="${pet.earColor}" /><ellipse cx="72" cy="32" rx="8" ry="12" fill="${pet.earColor}" />`;
             }
@@ -937,7 +950,7 @@
             document.getElementById('part-nose').innerHTML = `<polygon points="50,56 46,52 54,52" fill="#ff4d6d"/><path d="M 46 60 Q 50 64 54 60" fill="none" stroke="#1e293b" stroke-width="1.5"/>`;
             document.getElementById('part-cheeks').innerHTML = `<circle cx="33" cy="57" r="4" fill="#fda4af" opacity="0.8"/><circle cx="67" cy="57" r="4" fill="#fda4af" opacity="0.8"/>`;
             
-            if (pet.id === 'cat' || pet.id === 'fox') {
+            if (pet.id === 'cat' || pet.id === 'fox' || pet.id === 'tiger') {
                 document.getElementById('part-whiskers').innerHTML = `<line x1="20" y1="52" x2="32" y2="54" stroke="#94a3b8" stroke-width="1.5"/><line x1="20" y1="58" x2="32" y2="57" stroke="#94a3b8" stroke-width="1.5"/><line x1="80" y1="52" x2="68" y2="54" stroke="#94a3b8" stroke-width="1.5"/><line x1="80" y1="58" x2="68" y2="57" stroke="#94a3b8" stroke-width="1.5"/>`;
             } else {
                 document.getElementById('part-whiskers').innerHTML = `<path d="M 42 66 Q 50 70 58 66" fill="none" stroke="#f472b6" stroke-width="2"/>`;
@@ -977,15 +990,6 @@
             hasAnsweredCurrent = true;
             isEnhancing = true;
 
-            // 통계 수치 업데이트
-            totalSolvedCount++;
-            if (selected === correct) {
-                correctSolvedCount++;
-            } else {
-                wrongSolvedCount++;
-            }
-            updateStatsUI();
-
             document.getElementById('warningBox').style.display = 'none';
 
             const btns = document.querySelectorAll('.option-btn');
@@ -1000,8 +1004,10 @@
 
             if (selected === correct) {
                 btn.classList.add('correct');
+                correctSolvedCount++; // 맞은 횟수 증가
 
-                const successRate = Math.max(50, Math.round(85 - (heartLevel * 2.2)));
+                // 상향된 확률 공식 적용 (기초 95%, 레벨당 1.2%만 감소하여 실패율 대폭 축소)
+                const successRate = Math.max(75, Math.round(95 - (heartLevel * 1.2)));
                 const isSuccess = (Math.random() * 100) <= successRate;
 
                 overlay.className = "quiz-enhance-overlay active processing";
@@ -1011,6 +1017,7 @@
 
                 setTimeout(() => {
                     if (isSuccess) {
+                        enhanceSuccessCount++; // 강화 성공 횟수 증가
                         overlay.className = "quiz-enhance-overlay active success";
                         icon.innerText = "🌟";
                         title.innerText = "SUCCESS! 강화 성공!";
@@ -1032,11 +1039,14 @@
                             }, 500);
                         }
                     } else {
+                        enhanceFailCount++; // 강화 실패 횟수 증가
                         overlay.className = "quiz-enhance-overlay active fail";
                         icon.innerText = "💔";
                         title.innerText = "FAIL! 강화 실패...";
-                        sub.innerText = `🥺 정답이지만 ${successRate}% 확률을 못 뚫어서 실패했어요!`;
+                        sub.innerText = `🥺 아쉽게도 ${successRate}% 확률에 당첨되지 못했어요!`;
                     }
+
+                    updateStatsUI();
 
                     setTimeout(() => {
                         overlay.className = "quiz-enhance-overlay";
@@ -1048,6 +1058,8 @@
             } else {
                 btn.classList.add('wrong');
                 btns[correct].classList.add('correct');
+                wrongSolvedCount++; // 틀린 횟수 증가
+                updateStatsUI();
 
                 overlay.className = "quiz-enhance-overlay active wrong";
                 icon.innerText = "💦";
@@ -1062,9 +1074,10 @@
         }
 
         function updateStatsUI() {
-            document.getElementById('totalSolvedCount').innerText = totalSolvedCount;
             document.getElementById('correctSolvedCount').innerText = correctSolvedCount;
             document.getElementById('wrongSolvedCount').innerText = wrongSolvedCount;
+            document.getElementById('enhanceSuccessCount').innerText = enhanceSuccessCount;
+            document.getElementById('enhanceFailCount').innerText = enhanceFailCount;
         }
 
         function finishAnswerProcess() {
@@ -1106,7 +1119,7 @@
             document.getElementById('heartLevelText').innerText = `${heartLevel}성`;
             document.getElementById('scoreCount').innerText = `강화 하트 ❤️ ${heartLevel}개`;
 
-            const successRate = Math.max(50, Math.round(85 - (heartLevel * 2.2)));
+            const successRate = Math.max(75, Math.round(95 - (heartLevel * 1.2)));
             document.getElementById('petStatus').innerText = `🌱 성공 확률: ${successRate}% 하트 강화 도전!`;
 
             document.getElementById('progressText').innerText = `${heartLevel} / ${maxLevel}성 달성`;
@@ -1190,7 +1203,7 @@
         function renderZooStageAndInventory() {
             const stage = document.getElementById('zooStageAnimals');
             const inventoryContent = document.getElementById('inventoryContent');
-            const countText = `모은 동물 총 ${inventory.length}마리`;
+            const countText = `모은 동물 총 ${inventory.length}/14마리`;
 
             document.getElementById('topTotalPetCount').innerText = countText;
             document.getElementById('bottomTotalPetCount').innerText = countText;
