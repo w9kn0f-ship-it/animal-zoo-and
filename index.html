@@ -366,10 +366,10 @@
             margin-bottom: 10px;
         }
 
-        /* 문제 푼 결과 & 강화 성공/실패 횟수 통계판 */
+        /* 문제 통계 현황판 (총푼 문제 + 맞음 + 틀림 + 성공 + 실패) */
         .quiz-stats-bar {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 6px;
             background: #fdf4ff;
             padding: 8px 10px;
@@ -386,6 +386,7 @@
             gap: 4px;
         }
 
+        .stat-total { color: #475569; }
         .stat-correct { color: #16a34a; }
         .stat-wrong { color: #dc2626; }
         .stat-enhance-success { color: #0284c7; }
@@ -405,11 +406,11 @@
             letter-spacing: -0.3px;
         }
 
-        /* 인라인 힌트 및 미풀이 경고 박스 */
-        .hint-box, .warning-box {
+        /* 인라인 힌트, 오답 해설 및 미풀이 경고 박스 */
+        .hint-box, .warning-box, .explanation-box {
             display: none;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
             font-size: 15px;
             margin-bottom: 15px;
             font-weight: 700;
@@ -428,10 +429,37 @@
             animation: shake 0.3s ease;
         }
 
+        /* 오답 시 창 본문 내부에서 보여주는 해설 상자 */
+        .explanation-box {
+            background: #fff1f2;
+            border: 2px solid #fda4af;
+            color: #9f1239;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .explanation-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #e11d48;
+            margin-bottom: 4px;
+        }
+
+        .explanation-desc {
+            font-size: 14.5px;
+            color: #475569;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .options-list {
@@ -499,7 +527,7 @@
             cursor: not-allowed;
         }
 
-        /* 강화 연출 오버레이 */
+        /* 강화 성공/실패 팝업 애니메이션 오버레이 */
         .quiz-enhance-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -578,7 +606,6 @@
 
         .quiz-enhance-overlay.success .enhance-status-title { color: #166534; }
         .quiz-enhance-overlay.fail .enhance-status-title { color: #991b1b; }
-        .quiz-enhance-overlay.wrong .enhance-status-title { color: #b91c1c; }
 
         /* 하단 인벤토리 */
         .inventory-card { margin-top: 10px; }
@@ -700,6 +727,7 @@
 
             <!-- 오른쪽: 퀴즈 영역 & 오버레이 -->
             <div class="card quiz-card">
+                <!-- 강화 전용 오버레이 (정답 맞혔을 때만 작동) -->
                 <div class="quiz-enhance-overlay" id="quizEnhanceOverlay">
                     <div class="enhance-heart-icon" id="enhanceHeartIcon">💖</div>
                     <div class="enhance-status-title" id="enhanceStatusTitle">하트 강화 진행 중...</div>
@@ -711,18 +739,25 @@
                     <span id="scoreCount">강화 하트 ❤️ 1개</span>
                 </div>
 
-                <!-- 퀴즈 맞은/틀린 수 + 강화 성공/실패 횟수 통계판 -->
+                <!-- 퀴즈 현황판 (총 푼 문제 + 맞음 + 틀림 + 강화성공 + 강화실패) -->
                 <div class="quiz-stats-bar">
-                    <div class="stat-item stat-correct">⭕ 맞음: <span id="correctSolvedCount">0</span></div>
-                    <div class="stat-item stat-wrong">❌ 틀림: <span id="wrongSolvedCount">0</span></div>
-                    <div class="stat-item stat-enhance-success">✨ 강화성공: <span id="enhanceSuccessCount">0</span></div>
-                    <div class="stat-item stat-enhance-fail">💦 강화실패: <span id="enhanceFailCount">0</span></div>
+                    <div class="stat-item stat-total">📝 총 푼 문제: <span id="totalSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-correct">⭕ 맞은 문제: <span id="correctSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-wrong">❌ 틀린 문제: <span id="wrongSolvedCount">0</span>개</div>
+                    <div class="stat-item stat-enhance-success">✨ 강화 성공: <span id="enhanceSuccessCount">0</span>회</div>
+                    <div class="stat-item stat-enhance-fail" style="grid-column: span 2;">💦 강화 실패: <span id="enhanceFailCount">0</span>회</div>
                 </div>
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
                 
                 <div class="hint-box" id="hintBox"></div>
                 <div class="warning-box" id="warningBox">문제를 아직 풀지 않았어요! 정답을 골라주세요. 🐾</div>
+                
+                <!-- 틀렸을 때 본문 창 내부에서 바로 나타나는 정답 및 해설 박스 -->
+                <div class="explanation-box" id="explanationBox">
+                    <div class="explanation-title" id="explanationTitle">❌ 아쉽게 틀렸어요!</div>
+                    <div class="explanation-desc" id="explanationDesc"></div>
+                </div>
 
                 <div class="options-list" id="optionsList"></div>
                 <div class="quiz-footer">
@@ -751,13 +786,14 @@
         let isEnhancing = false;
         let hasAnsweredCurrent = false;
 
-        // 통계 카운터 변수들 (새로고침하면 초기화)
+        // 누적 문제 통계 변수들 (새로고침 시 초기화)
+        let totalSolvedCount = 0;
         let correctSolvedCount = 0;
         let wrongSolvedCount = 0;
         let enhanceSuccessCount = 0;
         let enhanceFailCount = 0;
         
-        // 동물 친구 종류 대폭 확장 (총 14마리)
+        // 동물 친구 14마리
         const animalPool = [
             { id: 'rabbit', name: '토리 토끼', emoji: '🐰', earColor: '#f472b6', faceColor: '#fce7f3' },
             { id: 'fox', name: '포포 여우', emoji: '🦊', earColor: '#f97316', faceColor: '#ffedd5' },
@@ -850,6 +886,7 @@
             { question: "모자이크 그림이 복잡해 보였어요. ( ) 완성하니 멋졌어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "복잡해 보였지만 반대로 결과물은 멋졌어요." },
 
             { question: "장난감을 즐겁게 가지고 놀았어요. ( ) 상자에 깔끔히 정리했어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "놀고 나서 이어서 한 행동을 차례대로 나열해요." },
+            { question: "어두운 밤이 되었어요. ( ) 하늘에 예쁜 별이 반짝여요.", options: ["그래서", "```html
             { question: "어두운 밤이 되었어요. ( ) 하늘에 예쁜 별이 반짝여요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "밤이 된 풍경에 이어 보이는 모습을 덧붙입니다." },
             { question: "달콤한 수박을 한 조각 먹었어요. ( ) 노란 바나나도 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "먹은 과일들을 나열할 때 쓰는 말이에요." },
             { question: "놀이공원에 즐겁게 놀러 갔어요. ( ) 신나는 회전목마를 탔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "가서 연속적으로 한 일들을 연결합니다." },
@@ -973,6 +1010,10 @@
             const warningBox = document.getElementById('warningBox');
             warningBox.style.display = 'none';
 
+            // 오답 해설 박스 초기화
+            const explanationBox = document.getElementById('explanationBox');
+            explanationBox.style.display = 'none';
+
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = "";
 
@@ -988,25 +1029,30 @@
         function checkAnswer(selected, correct, btn) {
             if (isEnhancing || hasAnsweredCurrent) return;
             hasAnsweredCurrent = true;
-            isEnhancing = true;
+
+            const current = quizData[currentQuizIndex % quizData.length];
+            totalSolvedCount++; // 총 푼 문제 수 증가
 
             document.getElementById('warningBox').style.display = 'none';
 
             const btns = document.querySelectorAll('.option-btn');
             btns.forEach(b => b.disabled = true);
-            document.getElementById('nextBtn').disabled = true;
-            document.getElementById('hintBtn').disabled = true;
-
-            const overlay = document.getElementById('quizEnhanceOverlay');
-            const icon = document.getElementById('enhanceHeartIcon');
-            const title = document.getElementById('enhanceStatusTitle');
-            const sub = document.getElementById('enhanceStatusSub');
 
             if (selected === correct) {
+                // 정답인 경우: 정답 처리 및 강화 연출 진행
+                isEnhancing = true;
                 btn.classList.add('correct');
-                correctSolvedCount++; // 맞은 횟수 증가
+                correctSolvedCount++;
+                updateStatsUI();
 
-                // 상향된 확률 공식 적용 (기초 95%, 레벨당 1.2%만 감소하여 실패율 대폭 축소)
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('hintBtn').disabled = true;
+
+                const overlay = document.getElementById('quizEnhanceOverlay');
+                const icon = document.getElementById('enhanceHeartIcon');
+                const title = document.getElementById('enhanceStatusTitle');
+                const sub = document.getElementById('enhanceStatusSub');
+
                 const successRate = Math.max(75, Math.round(95 - (heartLevel * 1.2)));
                 const isSuccess = (Math.random() * 100) <= successRate;
 
@@ -1017,7 +1063,7 @@
 
                 setTimeout(() => {
                     if (isSuccess) {
-                        enhanceSuccessCount++; // 강화 성공 횟수 증가
+                        enhanceSuccessCount++;
                         overlay.className = "quiz-enhance-overlay active success";
                         icon.innerText = "🌟";
                         title.innerText = "SUCCESS! 강화 성공!";
@@ -1039,7 +1085,7 @@
                             }, 500);
                         }
                     } else {
-                        enhanceFailCount++; // 강화 실패 횟수 증가
+                        enhanceFailCount++;
                         overlay.className = "quiz-enhance-overlay active fail";
                         icon.innerText = "💔";
                         title.innerText = "FAIL! 강화 실패...";
@@ -1056,24 +1102,24 @@
                 }, 1000);
 
             } else {
+                // 오답인 경우: 팝업 창 없이 본문 퀴즈 카드 안에서 정답과 해설을 직접 표시
                 btn.classList.add('wrong');
                 btns[correct].classList.add('correct');
-                wrongSolvedCount++; // 틀린 횟수 증가
+                wrongSolvedCount++;
                 updateStatsUI();
 
-                overlay.className = "quiz-enhance-overlay active wrong";
-                icon.innerText = "💦";
-                title.innerText = "틀렸어요!";
-                sub.innerText = "다음 문제는 더 꼼꼼히 풀어봐요!";
+                const correctWord = current.options[correct];
+                const explanationBox = document.getElementById('explanationBox');
+                document.getElementById('explanationDesc').innerText = `💡 정답은 [ ${correctWord} ] 입니다.\n📌 이유: ${current.hint}`;
+                explanationBox.style.display = 'block';
 
-                setTimeout(() => {
-                    overlay.className = "quiz-enhance-overlay";
-                    finishAnswerProcess();
-                }, 1400);
+                document.getElementById('nextBtn').disabled = false;
+                document.getElementById('hintBtn').disabled = false;
             }
         }
 
         function updateStatsUI() {
+            document.getElementById('totalSolvedCount').innerText = totalSolvedCount;
             document.getElementById('correctSolvedCount').innerText = correctSolvedCount;
             document.getElementById('wrongSolvedCount').innerText = wrongSolvedCount;
             document.getElementById('enhanceSuccessCount').innerText = enhanceSuccessCount;
