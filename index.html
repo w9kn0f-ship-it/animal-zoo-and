@@ -366,7 +366,7 @@
             margin-bottom: 10px;
         }
 
-        /* 문제 통계 현황판 (총푼 문제 + 맞음 + 틀림 + 성공 + 실패) */
+        /* 문제 통계 현황판 */
         .quiz-stats-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -429,7 +429,6 @@
             animation: shake 0.3s ease;
         }
 
-        /* 오답 시 창 본문 내부에서 보여주는 해설 상자 */
         .explanation-box {
             background: #fff1f2;
             border: 2px solid #fda4af;
@@ -659,7 +658,7 @@
         <div class="modal-box">
             <div class="modal-title">🏰 동물원에 오신 것을 환영해요!</div>
             <div class="modal-desc">원장님의 이름을 알려주세요 💕</div>
-            <input type="text" id="usernameInput" class="modal-input" placeholder="이민형" maxlength="10">
+            <input type="text" id="usernameInput" class="modal-input" placeholder="이민형" maxlength="10" onkeydown="if(event.key==='Enter') startZoo()">
             <button class="modal-btn" onclick="startZoo()">동물원 입장하기 🐾</button>
         </div>
     </div>
@@ -741,11 +740,11 @@
 
                 <!-- 퀴즈 현황판 (총 푼 문제 + 맞음 + 틀림 + 강화성공 + 강화실패) -->
                 <div class="quiz-stats-bar">
-                    <div class="stat-item stat-total">📝 총 푼 문제: <span id="totalSolvedCount">0</span>개</div>
-                    <div class="stat-item stat-correct">⭕ 맞은 문제: <span id="correctSolvedCount">0</span>개</div>
-                    <div class="stat-item stat-wrong">❌ 틀린 문제: <span id="wrongSolvedCount">0</span>개</div>
-                    <div class="stat-item stat-enhance-success">✨ 강화 성공: <span id="enhanceSuccessCount">0</span>회</div>
-                    <div class="stat-item stat-enhance-fail" style="grid-column: span 2;">💦 강화 실패: <span id="enhanceFailCount">0</span>회</div>
+                    <div class="stat-item stat-total">📝 총 푼: <span id="totalSolvedCount">0</span></div>
+                    <div class="stat-item stat-correct">⭕ 맞음: <span id="correctSolvedCount">0</span></div>
+                    <div class="stat-item stat-wrong">❌ 틀림: <span id="wrongSolvedCount">0</span></div>
+                    <div class="stat-item stat-enhance-success">✨ 성공: <span id="enhanceSuccessCount">0</span></div>
+                    <div class="stat-item stat-enhance-fail" style="grid-column: span 2;">💦 실패: <span id="enhanceFailCount">0</span></div>
                 </div>
 
                 <div class="quiz-question" id="quizQuestion">문제를 불러오는 중...</div>
@@ -886,7 +885,6 @@
             { question: "모자이크 그림이 복잡해 보였어요. ( ) 완성하니 멋졌어요.", options: ["그래서", "그러나", "그리고"], answer: 1, hint: "복잡해 보였지만 반대로 결과물은 멋졌어요." },
 
             { question: "장난감을 즐겁게 가지고 놀았어요. ( ) 상자에 깔끔히 정리했어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "놀고 나서 이어서 한 행동을 차례대로 나열해요." },
-            { question: "어두운 밤이 되었어요. ( ) 하늘에 예쁜 별이 반짝여요.", options: ["그래서", "```html
             { question: "어두운 밤이 되었어요. ( ) 하늘에 예쁜 별이 반짝여요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "밤이 된 풍경에 이어 보이는 모습을 덧붙입니다." },
             { question: "달콤한 수박을 한 조각 먹었어요. ( ) 노란 바나나도 먹었어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "먹은 과일들을 나열할 때 쓰는 말이에요." },
             { question: "놀이공원에 즐겁게 놀러 갔어요. ( ) 신나는 회전목마를 탔어요.", options: ["그래서", "그러나", "그리고"], answer: 2, hint: "가서 연속적으로 한 일들을 연결합니다." },
